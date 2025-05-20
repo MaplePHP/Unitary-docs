@@ -1,84 +1,106 @@
 ---
-title: Partial mock (proxy)
+title: Partial Mocks & Wrapping
 sidebar_position: 2
 ---
 
-### Partial mock (proxy)
+# Partial Mocks & Wrapping
 
-## What Is a Partial Mock and Why Is It Powerful?
+Unitary gives you powerful control over how methods are mocked — not just whether they're mocked. With **partial mocking** and **method wrapping**, you can combine real behavior with custom test logic, resulting in more focused and realistic tests.
 
-In real-world testing, you often want to test how your classes behave together — without completely replacing them with fake objects. That’s where **partial mocks** come in.
+---
 
-A **partial mock** lets you selectively override certain methods on a class, while leaving the rest of the class fully functional. This means you can:
+## Partial Mocking
 
-* Let some methods run as they normally would (keepOriginal)
-* Inject your own behavior where needed (wrap)
-* Stub out specific actions (willReturn)
+Partial mocking allows you to selectively keep the original implementation of some methods while mocking others. 
+This is ideal when preserving trusted logic or bypassing side effects like logging or email sending.
 
-In Unitary, partial mocking is first-class — not an afterthought. It gives you **surgical precision** to test just what you want, without breaking the rest of your object’s internal behavior.
+**Use Case:** mock `writeToDisk()` to skip file writes, but keep `formatMessage()` for real formatting.
 
-### Why is this so useful?
+### Example
 
-Let’s say you’re testing a service that sends emails. You want to:
-
-* Use the real logic to build and render the email
-* But you **don’t want to actually send** the email
-* And maybe you want to **observe or enhance** how the message body is constructed
-
-With a full mock, you'd lose the real logic entirely. With a partial mock, you keep the parts that matter — and skip the parts that don't.
-
-## Example 
 ```php
-$unit->group("Send welcome email (with partial Mailer mock)", function ($case) {
+$logger = $case->mock(Logger::class, function(MethodRegistry $mock) {
+    $mock->method("formatMessage")->keepOriginal();
+    $mock->method("writeToDisk")->willReturn(true);
+});
 
-    // Create a mock of the Mailer class
-    $mailer = $case->mock(Mailer::class, function (MethodPool $mock) {
-        
-        // Keep the real implementation of renderTemplate() — we want to use actual template rendering
-        $mock->method("renderTemplate")->keepOriginal();
+$logger->log("Notice", "Something happened");
+```
 
-        // Wrap buildBody() to customize how the email body is built, but still use renderTemplate() internally
-        $mock->method("buildBody")->wrap(function() {
-            return $this->renderTemplate("HelloWorld", "Lorem ipsum dolor sit amet.");
+---
+
+## Method Wrapping
+
+Method wrapping gives you the ability to override a method’s behavior while still having access 
+to the original instance and logic. Use it when you want to alter behavior while still reusing 
+internal logic or dependencies.
+
+**Use Case:** wrap `save()` to prevent real writes but still call `validateData()`. Also might 
+be useful when input arguments also matter.
+
+### Example
+
+```php
+$repository = $case->mock(UserRepository::class, function(MethodRegistry $mock) {
+    $mock->method("save")->wrap(function($data) {
+        $this->validateData($data);
+        return true; // pretend the save worked
+    });
+});
+
+$repository->save(['name' => 'Alice']);
+```
+
+---
+
+## Combined Example
+
+This example brings together both partial mocking and method wrapping. Here, we:
+
+* Keep the real behavior of `formatMessage()` (partial mocking)
+* Wrap the `log()` method to change its behavior but still use the formatter
+* Stub the `writeToDisk()` method to prevent real I/O
+
+```php
+use MaplePHP\Unitary\{Unit, TestCase, MethodRegistry, Expect};
+
+$unit->group("Logging flow with custom override", function (TestCase $case) {
+
+    $logger = $case->mock(Logger::class, function (MethodRegistry $mock) {
+
+        // Keep the original formatter logic
+        $mock->method("formatMessage")->keepOriginal();
+
+        // Override log() to inspect inputs and use formatter
+        $mock->method("log")->wrap(function($level, $message) {
+            $formatted = $this->formatMessage($level, $message);
+            $this->writeToDisk($formatted);
+            return $formatted;
         });
-        
-        // Stub the send() method to prevent real email sending — simulate success instead
-        // Also validate that it must be called exactly once
-        $mock->method("send")->willReturn(true)->called(1);
+
+        // Stub the writeToDisk() method
+        $mock->method("writeToDisk")
+            ->willReturn(true)
+            ->called(1);
     });
 
-    // Pass the partially mocked Mailer into the real EmailService
-    $service = new EmailService($mailer);
+    $output = $logger->log("INFO", "System initialized");
 
-    // Call the method we want to test — which internally calls buildBody() and send()
-    $result = $service->sendWelcomeEmail("john@example.com");
-
-    // Validate that the email sending process completed successfully (send() returned true)
-    $case->validate($result, function (Expect $valid) {
-        $valid->isTrue();
-    });
-
-    // Validate the final email body that was "built" during the test
-    $case->validate($mailer->getBody(), function (Expect $valid) {
-        $valid->isFullHtml();
-        $valid->contains("HelloWorld");
-        $valid->contains("Lorem ipsum dolor sit amet.");
+    $case->validate($output, function (Expect $expect) {
+        $expect->contains("[INFO]");
+        $expect->contains("System initialized");
     });
 });
 ```
 
-### How Unitary Makes This Easy
+---
 
-* **keepOriginal**
-  Tells Unitary to use the real method from the original class. Perfect when you trust a method’s logic and want to keep using it during the test.
+## Summary
 
-* **wrap**
-  Lets you redefine a method using your own function. You can add extra logic, conditionally call the real method, or return a custom result.
+Unitary supports realistic, expressive testing by letting you mock only what you need. Instead of fully mocking a class and losing valuable internal logic, partial mocking and wrapping give you precise control with minimal effort.
 
-* **willReturn**
-  Stubs a method to return a fixed value. This is ideal for isolating side effects like external API calls, database writes, or email sends.
+With Unitary:
 
-Combined, these give you the best of both worlds: **real behavior where it matters**, and **full control where it doesn’t**.
-
-
-With Unitary, partial mocks aren’t just a workaround — they’re a core feature designed to help you test smarter, not harder.
+* You can **trust what works**
+* **Mock what doesn’t**
+* And **override what’s needed** — all while writing clear, maintainable tests

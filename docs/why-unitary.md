@@ -4,7 +4,7 @@ sidebar_position: 1
 ---
 
 
-# Unitary — A Pragmatic Testing Framework for PHP
+# Unitary - A Pragmatic Testing Framework for PHP
 
 Unitary is a modern PHP testing framework that focuses on clarity, precision, and developer control. 
 It supports both unit and integration testing, with built-in support for mocking and structured validation.
@@ -22,13 +22,14 @@ can be thrown but then it means you have code something wrong and not a test tha
 ```php
 use MaplePHP\Unitary\{Unit, TestCase, TestConfig, Expect};
 
-$unit->group("Testing API Request library", function(TestCase $case) {
-    $request = new Request("GET", "https://example.com/?page=1");
+$unit->group("Has a about page", function(TestCase $case) {
 
-    $case->validate($request->getUri()->getQuery(), function(Expect $expect) {
-        $expect->hasQueryParam("page", 1);
+    $response = $this->get("/about");
+    $stausCode = $response->getStatusCode();
+    
+    $case->validate($stausCode, function(Expect $valid) {
+        $valid->isHttpSuccess();
     });
-
 });
 ```
 

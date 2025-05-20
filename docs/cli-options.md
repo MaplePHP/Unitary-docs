@@ -3,7 +3,6 @@ title: CLI Options
 sidebar_position: 3
 ---
 
-
 ## CLI Options
 
 ### Run the Tests
@@ -78,8 +77,6 @@ Run all tests under a custom directory (absolute or relative):
 php vendor/bin/unitary --path="/tests/"
 ```
 
-> **Note:** If you change the path, you must manually exclude the `vendor` directory if needed.
-
 ### Exclude Files or Directories
 
 Use the `--exclude` flag to ignore specific files or directories (relative to `--path`):
@@ -87,3 +84,5 @@ Use the `--exclude` flag to ignore specific files or directories (relative to `-
 ```bash
 php vendor/bin/unitary --exclude="./tests/unitary-query-php, tests/otherTests/*, */extras/*"
 ```
+
+> **Note:** If you add the exclude argument, you must manually exclude the `vendor` directory if needed.

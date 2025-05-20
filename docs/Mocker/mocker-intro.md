@@ -1,47 +1,120 @@
 ---
-title: Mocker introduction
+title: How to Mock
 sidebar_position: 1
 ---
 
-### Mocking is Purely Magical
+# How to Mock
 
-Mocking has traditionally been one of the more tedious parts of writing tests in PHP. Boilerplate code, rigid syntax, and endless configuration have turned what should be a lightweight task into a chore. But with **Unitary**, mocking becomes something else entirely: *effortless, expressive, and dare we say, magical.*
+Unitary's mocking engine is designed to make mocking in PHP simpler, more expressive, and better integrated into your test flow. Unlike many traditional tools, Unitary removes unnecessary boilerplate and lets you focus on the behavior you want to verify.
 
-**Unitary's mocking engine redefines the developer experience.**
+## Why Use Unitary for Mocking?
 
-With a single line, you can mock entire classes — and not just with static defaults. Unitary gives you fluent control over methods, parameters, return types, and even default values tied to data types or specific methods. It's all baked into a system that feels dynamic and intuitive, not constrained and mechanical.
+* **One-liner mock creation**: Quickly mock any class without setup or external configuration.
+* **Fluent configuration**: Control method visibility, call expectations, parameter types, and return values using a fluid, readable syntax.
+* **Type-aware defaults**: Automatically returns default values based on expected types, or configure them as needed.
+* **Test-local state**: Each mock is isolated within its test context.
+* **No dependencies or config files**: Everything is handled in plain PHP.
 
-Want to mock a class and configure it inline? Go ahead.
-Need to control what a method returns, based on its argument or expected return type? No problem.
-Want a mock to honor PHP’s type system, return meaningful defaults, or even reference parameters? It just works.
+Unitary makes mocking feel like a natural extension of writing tests — not a separate task.
 
-Unitary isn't just about mocking faster — it's about mocking smarter. Here's what sets it apart:
+---
 
-* **Mock any class in one line**: Pass a class name and get a fully functioning mock out-of-the-box — ready to use in a real constructor or interface without boilerplate or stubs.
-* **Fluent method control**: Easily define return values, parameter constraints, references, counts, and optional arguments — all with an elegant, fluid syntax.
-* **Type-aware defaults**: Unitary automatically mocks return values based on expected types — but if you want control, override defaults globally or per method.
-* **Immutable mock contexts**: Mock configurations are tied immutably to the `TestCase`, ensuring test isolation and making mocking state explicit and predictable.
-* **No mocking hell**: No XML config, no extra setup files, no fragile introspection — just pure PHP logic inside your tests.
-
-The power lies not just in what you can do — but in **how little effort it takes** to do it. Unitary doesn’t interrupt your flow with unnecessary ceremony. It embraces PHP’s capabilities and extends them into a mocking experience that feels native, expressive, and fun.
-
-Whether you're testing a simple mailer or complex object chains involving nested dependencies, Unitary is built to stay out of your way and help you get there faster — with fewer lines, clearer intent, and a sense of control that traditional mocking tools rarely offer.
-
-Mocking should never feel like a necessary evil. With Unitary, it doesn’t.
-It feels like a superpower.
+## Basic Example
 
 ```php
-$unit->group("Mocking is now fun", function($case) {
+$unit->group("Mocking a PSR-7 Stream", function(TestCase $case) {
+    // Create a mock of a PSR-7 StreamInterface
+    $stream = $case->mock(StreamInterface::class);
 
-    // Mocked!
-    $stream = $case->mock(Stream::class);
-    
-    // Works! (Passed a valid mocked instance of Stream)
+    // Inject the mock into a Response object
     $response = new Response($stream);
-    $content = $response->getBody()->getContents();    
-
-    $case->validate($content, function(Expect $inst) {
-        $inst->hasResponse();
+    
+    $case->validate($response->getBody(), function(Expect $expect) {
+        $expect->isInstanceOf(StreamInterface::class);
     });
 });
 ```
+
+## Customizing Method Behavior
+
+Mock configuration is done via a `MethodRegistry` callback passed as the second argument to `mock()`.
+
+```php
+$unit->group("Testing a User Registration Service", function(TestCase $case) {
+
+    $mailer = $case->mock(Mailer::class, function(MethodRegistry $method) {
+        $method->method("sendWelcomeEmail")
+            ->called(1)
+            ->paramIsType(0, 'string')
+            ->willReturn(true);
+
+        $method->method("getFromAddress")
+            ->willReturn("noreply@example.com");
+    });
+
+    $service = new UserService($mailer);
+
+    $case->validate($service->register("user@example.com"), function(Expect $expect) {
+        $expect->isTrue();
+    });
+});
+```
+
+## Features Overview
+
+| Feature                   | Description                                                         |
+| ------------------------- | ------------------------------------------------------------------- |
+| `called(n)`               | Ensures a method is called `n` times                                |
+| `willReturn(value)`       | Sets a return value                                                 |
+| `paramIsType(i, type)`    | Asserts the parameter at index `i` is of the specified type         |
+| `paramHasDefault(i, val)` | Asserts that the parameter at index `i` has the given default value |
+| `paramIsOptional(i)`      | Checks if the parameter is optional                                 |
+| `paramIsReference(i)`     | Ensures the parameter is passed by reference                        |
+| `hasDocComment()`         | Validates that the method has a docblock                            |
+| `isPublic()`              | Ensures the method has public visibility                            |
+
+---
+
+## Sample Error Output
+
+When a mock expectation fails, Unitary shows a detailed, test-aware error message:
+
+```text
+ FAIL  ..tests/UserServiceTest.php - Testing a User Registration Service
+
+Error: Mock method "sendWelcomeEmail" failed
+
+Failed on line 31:
+ → $mailer = $case->mock(Mailer::class, function (MethodRegistry $method) {
+   called         → failed
+                    Expected: "1" | Actual: "2"
+
+Passed: 3/4 - 448b06d9127fbca608168e769acd3c7c2
+Total: 3/4 • Peak memory usage: 5194.6 KB
+```
+
+---
+
+## Should You Use It for Code Quality Checks?
+
+Unitary's mocking API includes optional checks like `hasDocComment()` and `isPublic()`, which can help identify inconsistencies or incomplete interfaces. While helpful during development, these are not replacements for dedicated static analysis tools like PHPStan or Psalm. Think of them as guardrails — not primary validation sources.
+
+---
+
+## When to Use Unitary Mocking
+
+Use Unitary's mocking engine when:
+
+* You want fast, clean mocking integrated into test cases.
+* You're testing services or controllers with dependencies.
+* You want to verify method usage and enforce call expectations.
+
+Avoid using mocks for code you don't control — prefer real instances when testing third-party libraries unless behavior isolation is required.
+
+---
+
+## Summary
+
+Unitary's mocking makes test doubles simple, expressive, and PHP-native. It’s great for isolating behavior and controlling test flow without external dependencies. Whether you're mocking a mailer, API client, or repository class, the goal is the same: reduce friction and increase confidence in your tests.
+
+For full flexibility and developer-friendly syntax — Unitary keeps you in control.

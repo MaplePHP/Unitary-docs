@@ -2,7 +2,7 @@
 sidebar_position: 2
 ---
 
-# Unit testing
+# Create the tests
 Here I am going to show you some different ways you can do some unit testings. 
 Once you read this short page you will be able to start and understand unit testing in just under 3 min.
 
@@ -35,7 +35,7 @@ That’s the format. No magic methods. No annotations. Just your values, your ex
 
 ---
 
-## Assertions, on Your Terms
+## Assertions
 
 One of the unique aspects of Unitary is how it integrates native PHP `assert()`. Assert can be used 
 for different reasons, every thing from giving you more information when a test failed or to 
