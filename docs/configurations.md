@@ -14,8 +14,8 @@ More configuration will most certinaly come in future.
 
 ```php
 $config = TestConfig::make("This is a test subject") // This is the test subject
-    ->setSkip()
-    ->setName('unitary');
+    ->withSkip()
+    ->withName('unitary');
     
 $unit->group($config, function (TestCase $case) {
     // ...
@@ -24,13 +24,13 @@ $unit->group($config, function (TestCase $case) {
 
 ---
 
-### setSkip
+### withSkip
 Will skip the test in validation, you can still se it in the test list but it will 
 be tagged as skipped and if it contains error those errors will be hidden which 
 great if you are not finished writing the tests. 
 
 ```php
-TestConfig::make("Subject")->setSkip()
+TestConfig::make("Subject")->withSkip()
 ```
 #### Run skipped test 
 What is great is that even when working with test that is skipped that wont show error on the main test command 
@@ -43,17 +43,17 @@ _Note: The has will be visible under each executed test_
 
 ---
 
-### setName
+### withName
 This allows you to selectively run or inspect specific tests via the CLI.
 
 You can assign names to one or multiple test groups, even reuse the same name across different groups. This allows you to selectively run or inspect specific tests via the CLI.
 
 #### Define the test name
 
-By using a `TestConfig` with `setName()`, you can define a test group that is excluded from the default batch run:
+By using a `TestConfig` with `withName()`, you can define a test group that is excluded from the default batch run:
 
 ```php
-$config = TestConfig::make("This is a test message")->setName('unitary');
+$config = TestConfig::make("This is a test message")->withName('unitary');
 
 $unit->group($config, function (TestCase $case) {
     // Your test cases go here
@@ -62,7 +62,7 @@ $unit->group($config, function (TestCase $case) {
 
 #### Run the selected test
 
-Use the `--show` flag with the name you set via `setName()`:
+Use the `--show` flag with the name you set via `withName()`:
 
 ```bash
 php vendor/bin/unitary --show=unitary

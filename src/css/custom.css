@@ -19,27 +19,39 @@ html, body {
   --ifm-color-primary-lighter: #3bbab3;
   --ifm-color-primary-lightest: #5bc8c1;
   --ifm-code-font-size: 95%;
+  --ifm-navbar-item-padding-horizontal: 1rem;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+}
+
+html[data-theme="dark"] {
+  --ifm-background-color: #142534;
+  --ifm-navbar-background-color: #0B1D28;
+  --ifm-footer2-background-color: #0B1D28;
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
 [data-theme='dark'] {
   --ifm-color-primary: #64FFDA;
+  --ifm-color-emphasis-100: #000;
+  --ifm-background-color: #000;
   --ifm-color-primary-dark: #23394E;
-  --ifm-color-primary-darker: #2e9a92;
-  --ifm-color-primary-darkest: #257f78;
+  --ifm-color-primary-darker: #6A9955;
+  --ifm-color-primary-darkest: #608A4D;
   --ifm-color-primary-light: #BFC1CF;
   --ifm-color-primary-lighter: #CCD6F7;
   --ifm-color-primary-lightest: #CCD6F7;
   --docusaurus-highlighted-code-line-bg: rgba(255, 255, 255, 0.1);
 }
 
-.bg-code-block {
-  background-color: #282A36;
+.bg-code-block, .prism-code code {
+  background-color: #0C1C26;
 }
 
+.navbar__brand {
+  margin-right: 2rem;
+}
 .navbar__logo {
-  background-color: #242526;
+  background-color: var(--ifm-navbar-background-color);
   border-radius: 5px;
   padding: 5px;
 }
@@ -226,19 +238,24 @@ nav ul, nav ul li, .search-modal ul, .search-modal ul li {
   align-items: center;
 }
 
-.hero .container {
-  max-width: 1024px;
+.hero .col {
+  text-align: left;
 }
 
-.hero .inp-button {
-  max-width: 580px;
+
+.hero .col img {
+  width: 100%;
+  height: auto;
+  max-width: 620px;
   margin: 0 auto;
 }
+
 
 .hero__subtitle {
   font-size: 1.2rem;
   margin-bottom: 2.5rem;
 }
+
 
 
 .search-icon-btn svg, .icon-btn svg {
@@ -316,8 +333,8 @@ nav ul, nav ul li, .search-modal ul, .search-modal ul li {
 
 .inp-button.inp-button--invert {
   color: #7D94AA;
-  background-color: #1B1B1D;
-  border: 1px solid #1B1B1D;
+  background-color: #0C1C26;
+  border: 1px solid #0C1C26;
 }
 
 .search-modal-content input:focus {
@@ -342,7 +359,7 @@ nav ul, nav ul li, .search-modal ul, .search-modal ul li {
 
 .footer--dark {
   color: #FFF;
-  background: var(--docusaurus-highlighted-code-line-bg);
+  background: var(--ifm-footer2-background-color);
 }
 
 .c-button {
@@ -357,6 +374,14 @@ nav ul, nav ul li, .search-modal ul, .search-modal ul li {
 .c-button:hover {
   color: #FFF;
   background: var(--ifm-color-primary-darker);
+}
+
+.box-text .col + .col {
+  padding: 5rem !important;
+}
+
+.reverse {
+  flex-direction: row-reverse;
 }
 
 @media screen and (max-width: 1280px) {
@@ -376,10 +401,17 @@ nav ul, nav ul li, .search-modal ul, .search-modal ul li {
   .column-list {
     column-count: 3;
   }
+  .hero {
+    padding: 0 !important;
+  }
+  .col.col--6 {
+    padding: 2rem var(--ifm-spacing-horizontal) !important;
+  }
 }
 
 @media screen and (max-width: 580px) {
   .column-list {
     column-count: 2;
   }
+
 }

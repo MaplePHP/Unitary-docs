@@ -48,10 +48,10 @@ You can assign names to one or multiple test groups, even reuse the same name ac
 
 #### 1. Define a Named (Manual) Test Group
 
-By using a `TestConfig` with `setName()`, you can define a test group that is excluded from the default batch run:
+By using a `TestConfig` with `withName()`, you can define a test group that is excluded from the default batch run:
 
 ```php
-$config = TestConfig::make("This is a test message")->setName('unitary');
+$config = TestConfig::make("This is a test message")->withName('unitary');
 
 $unit->group($config, function (TestCase $case) {
     // Your test cases go here
@@ -60,7 +60,7 @@ $unit->group($config, function (TestCase $case) {
 
 #### 2. Run Only That Test Group via CLI
 
-Use the `--show` flag with the name you set via `setName()`:
+Use the `--show` flag with the name you set via `withName()`:
 
 ```bash
 php vendor/bin/unitary --show=unitary
@@ -84,5 +84,15 @@ Use the `--exclude` flag to ignore specific files or directories (relative to `-
 ```bash
 php vendor/bin/unitary --exclude="./tests/unitary-query-php, tests/otherTests/*, */extras/*"
 ```
-
 > **Note:** If you add the exclude argument, you must manually exclude the `vendor` directory if needed.
+
+### Smart search
+
+As long as the path is valid and the directories exist, the --smart-search flag will always locate a test, even if it's not located directly in that directory.
+
+```bash
+php vendor/bin/unitary --path="app/Http" --smart-search
+```
+
+> **Note:** Smart search can work great in some niche cases, especially when adding unitary to IDE 
+> and you have tests in different location, for example, in different submodules. 

@@ -18,17 +18,26 @@ function HomepageHeader() {
   return (
     <>
       <header className={clsx('hero', styles.heroBanner)}>
-        <div className="container">
-          <h1 className={"hero__title"}>{siteConfig.title}</h1>
-          <p className="hero__subtitle"><strong>PHP Unitary</strong> is a <strong>user-friendly</strong> and robust unit testing <strong>framework</strong> designed to make writing and running tests for your PHP code easy. With an intuitive CLI interface that works on all platforms and robust validation options, Unitary makes it easy for you as a developer to ensure your code is reliable and functions as intended.</p>
-          <div className={styles.buttons}>
-            <button className={"inp-button inp-button--invert"} onClick={() => setOpen(true)}>
-              <span>Search docs</span>
-              <SearchShortcutKeys className={"ml-auto"}/>
-            </button>
+
+        <section className={"container"}>
+          <div className={"row"}>
+            <div className={"col col--6 flex align-items-center overflow-auto"}>
+              <img src="https://wazabii.se/github-assets/unitary/unitary-cli-states.png" alt=""/>
+            </div>
+            <div className={"col col--6 padding--lg"}>
+              <h1 className={"hero__title"}>{siteConfig.title}</h1>
+              <p className="hero__subtitle"><strong>PHP Unitary</strong> is a <strong>user-friendly</strong> and robust unit testing <strong>framework</strong> designed to make writing and running tests for your PHP code easy. With an intuitive CLI interface that works on all platforms and robust validation options, Unitary makes it easy for you as a developer to ensure your code is reliable and functions as intended.</p>
+              <div className={styles.buttons}>
+                <button className={"inp-button inp-button--invert"} onClick={() => setOpen(true)}>
+                  <span>Search docs</span>
+                  <SearchShortcutKeys className={"ml-auto"}/>
+                </button>
+              </div>
+            </div>
           </div>
-        </div>
+        </section>
       </header>
+
 
       <SearchModal isOpen={open} onClose={() => setOpen(false)}/>
     </>
@@ -43,9 +52,9 @@ export default function Home() {
       description="Description will go into a meta tag in <head />">
       <HomepageHeader />
       <main>
-        <HomepageFeatures />
-        <section className={"container"}>
-          <div className={"row"}>
+
+        <section className={"container box-text"}>
+          <div className={"row reverse"}>
             <div className={"col col--6 flex align-items-center bg-code-block overflow-auto"}>
               <CodeBlock language="php">
 {`$unit->group("Has a about page", function(TestCase $case) {
@@ -60,26 +69,49 @@ export default function Home() {
 `}
               </CodeBlock>
             </div>
-            <div className={"col col--6 padding--xl"}>
-              <Heading as="h2">Lorem ipsum dolor</Heading>
+            <div className={"col col--6"}>
+              <Heading as="h2">User-friendly</Heading>
               <p>
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam incidunt inventore iste necessitatibus, quibusdam quos repellendus rerum vitae voluptate voluptatum. Aut consectetur deserunt dignissimos ducimus est expedita magni officiis possimus, provident quibusdam, quod rem repellendus saepe tenetur vel veniam voluptate. A animi beatae cupiditate debitis, dolorum eaque, eveniet ex expedita, explicabo fugiat illum iste molestias nemo quam reiciendis repudiandae unde.
               </p>
+              <a className={"c-button"} href={"/Unitary/docs/getting-started"}>Get started</a>
             </div>
           </div>
         </section>
-        <section className={"container"}>
+        <section className={"container box-text"}>
           <div className={"row"}>
-            <div className={"col col--6 padding--xl"}>
-              <Heading as="h2">Mocking is Purely Magical</Heading>
-              <p><strong>Mocking should never feel like a necessary evil. With Unitary, it doesn’t.
-                It feels like a superpower.</strong></p>
-              <p>
-                Mocking in PHP has never felt this smooth. With Unitary, you can mock classes in a single line, control methods with fluent syntax, and get intelligent defaults that just work. No boilerplate. No config hell. Just clean, expressive, powerful testing that makes you wonder how you ever did it the old way.
-              </p>
-              <a className={"c-button"} href={"/Unitary/docs/Mocker/mocker-intro"}>Read more</a>
+            <div className={"col col--6 flex align-items-center bg-code-block overflow-auto"}>
+              <CodeBlock language="php">
+                {`$unit->group("Example API Request", function(TestCase $case) {
+
+  $case->validate($value, function(Expect $expect) {
+      
+      assert(1 === 2, "This will fail");
+      //assert(1 === 2);
+  });
+  
+  $case->validate($value, function(Expect $expect) {
+      return 1 === 2;
+  });
+});
+`}
+              </CodeBlock>
             </div>
-            <div className={"col col--6 flex align-items-center bg-code-block"}>
+            <div className={"col col--6"}>
+              <Heading as="h2">Custom validation</Heading>
+              <p>
+                You do not need to rely on the built-in validation methods. With Unitary, you can create your own
+                custom validation or methods and use them in your tests very easily.
+                Assert are not just a simple way to validate data but Unitary actually also handles them so that
+                if test fails it will show you what have failed so assert is recommended to use on custom validations.
+              </p>
+              <a className={"c-button"} href={"/Unitary/docs/unit-testing#assertions"}>Read more</a>
+            </div>
+          </div>
+        </section>
+        <section className={"container box-text"}>
+          <div className={"row reverse"}>
+            <div className={"col col--6 flex align-items-center bg-code-block overflow-auto"}>
               <CodeBlock language="php">
                 {`$unit->group("Mocking is now fun", function(TestCase $case) {
 
@@ -96,6 +128,15 @@ export default function Home() {
 });
 `}
               </CodeBlock>
+            </div>
+            <div className={"col col--6"}>
+              <Heading as="h2">Mocking is Purely Magical</Heading>
+              <p><strong>Mocking should never feel like a necessary evil. With Unitary, it doesn’t.
+                It feels like a superpower.</strong></p>
+              <p>
+                Mocking in PHP has never felt this smooth. With Unitary, you can mock classes in a single line, control methods with fluent syntax, and get intelligent defaults that just work. No boilerplate. No config hell. Just clean, expressive, powerful testing that makes you wonder how you ever did it the old way.
+              </p>
+              <a className={"c-button"} href={"/Unitary/docs/Mocker/mocker-intro"}>Read more</a>
             </div>
           </div>
         </section>

@@ -48,7 +48,7 @@ function Feature({image, title, description}) {
 
 export default function HomepageFeatures() {
   return (
-    <section className={styles.features}>
+    <section className={styles.features + " bg-code-block"}>
       <div className="container">
         <div className="row">
           {FeatureList.map((props, idx) => (

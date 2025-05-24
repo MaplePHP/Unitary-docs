@@ -33,8 +33,6 @@ $unit->group("Has a about page", function(TestCase $case) {
 });
 ```
 
----
-
 ### Minimal CLI, Maximum Insight
 
 When run via CLI, Unitary outputs validation feedback in a structured and human-readable way. The report includes line numbers, failed expressions, custom messages, and the exact input that failed.
@@ -42,6 +40,12 @@ When run via CLI, Unitary outputs validation feedback in a structured and human-
 ```
 php vendor/bin/unitary
 ```
+
+#### Response
+
+
+![Unitary CLI response](https://wazabii.se/github-assets/unitary/unitary-cli.png)
+
 
 ---
 

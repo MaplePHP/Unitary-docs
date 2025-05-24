@@ -4,7 +4,14 @@
 // There are various equivalent ways to declare your Docusaurus config.
 // See: https://docusaurus.io/docs/api/docusaurus-config
 
-import {themes as prismThemes} from 'prism-react-renderer';
+import {
+  duotoneDark,
+  github,
+  gruvboxMaterialDark,
+  jettwaveDark,
+  nightOwl,
+  themes as prismThemes
+} from 'prism-react-renderer';
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
@@ -79,8 +86,8 @@ const config = {
     ({
       colorMode: {
         defaultMode: 'dark', // Set dark mode as default
-        disableSwitch: false, // Allow users to switch themes (set true to disable)
-        respectPrefersColorScheme: false, // Ignore user's OS/browser preference
+        disableSwitch: true, // Allow users to switch themes (set true to disable)
+        respectPrefersColorScheme: true, // Ignore user's OS/browser preference
       },
       // Replace with your project's social card
       image: 'img/validate-social-card.png',
@@ -95,9 +102,12 @@ const config = {
             type: 'docSidebar',
             sidebarId: 'tutorialSidebar',
             position: 'left',
-            label: 'Tutorial',
+            label: 'The Documentation',
           },
+          { to: '/validation-api', label: 'Validation API', position: 'left' },
+          { to: '/why-unitary', label: 'Why Unitary?', position: 'left' },
           { to: '/faq', label: 'FAQ', position: 'left' },
+
           //{to: '/blog', label: 'Blog', position: 'left'},
           {
             type: 'search',
@@ -162,7 +172,7 @@ const config = {
       prism: {
         additionalLanguages: ['php'],
         theme: prismThemes.github,
-        darkTheme: prismThemes.dracula,
+        darkTheme: prismThemes.jettwaveDark,
       },
     }),
 };
