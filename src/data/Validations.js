@@ -336,7 +336,7 @@ true
       }
     ],
     code: `
-$isValid = Validator::value("Laravel is great")->contains("great");
+$isValid = Validator::value("Unitary is great")->contains("great");
 var_dump($isValid);
 `,
     result: `

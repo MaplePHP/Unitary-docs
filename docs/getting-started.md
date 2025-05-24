@@ -80,3 +80,9 @@ Now you can run your tests with:
 ```bash
 composer test
 ```
+
+To pass arguments to Unitary you will need to separate the runed script and the first arguments with `--`; 
+
+```bash
+composer test -- --help
+```

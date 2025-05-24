@@ -5,7 +5,7 @@ sidebar_position: 2
 
 # Partial Mocks & Wrapping
 
-Unitary gives you powerful control over how methods are mocked — not just whether they're mocked. With **partial mocking** and **method wrapping**, you can combine real behavior with custom test logic, resulting in more focused and realistic tests.
+Unitary gives you powerful control over how methods are mocked, not just whether they're mocked. With **partial mocking** and **method wrapping**, you can combine real behavior with custom test logic, resulting in more focused and realistic tests.
 
 ---
 
