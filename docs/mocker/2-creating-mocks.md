@@ -1,9 +1,8 @@
 ---
-title: How to Mock
-sidebar_position: 1
+title: Creating mocks
 ---
 
-# How to Mock
+# Creating mocks
 
 Unitary's mocking engine is designed to make mocking in PHP simpler, more expressive, and better integrated into your test flow. Unlike many traditional tools, Unitary removes unnecessary boilerplate and lets you focus on the behavior you want to verify.
 
