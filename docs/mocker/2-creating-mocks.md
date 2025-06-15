@@ -23,10 +23,11 @@ $unit->group("Mocking a PSR-7 Stream", function(TestCase $case) {
     });
 });
 ```
+_This is actually all you need to do to mock a class._
 
-## Customizing Method Behavior
+## Method Behavior
 
-Mock configuration is done via a `MethodRegistry` callback passed as the second argument to `mock()`.
+You can configure some method behaviors in Unitary mocker. This is done via a `MethodRegistry` callback passed as the second argument to `mock()`.
 
 ```php
 $unit->group("Testing a User Registration Service", function(TestCase $case) {
@@ -34,16 +35,16 @@ $unit->group("Testing a User Registration Service", function(TestCase $case) {
     $mailer = $case->mock(Mailer::class, function(MethodRegistry $method) {
         $method->method("sendWelcomeEmail")
             ->called(1)
-            ->withArguments(true)
+            ->paramIsType(0, 'string')
             ->willReturn(true);
 
         $method->method("getFromAddress")
-            ->willReturn("john.doe@gmail.com");
+            ->willReturn("noreply@example.com");
     });
 
     $service = new UserService($mailer);
 
-    $case->validate($service->register("john.doe@gmail.com"), function(Expect $expect) {
+    $case->validate($service->register("user@example.com"), function(Expect $expect) {
         $expect->isTrue();
     });
 });
@@ -51,16 +52,48 @@ $unit->group("Testing a User Registration Service", function(TestCase $case) {
 
 ## Features Overview
 
-| Feature                   | Description                                                         |
-| ------------------------- | ------------------------------------------------------------------- |
-| `called(n)`               | Ensures a method is called `n` times                                |
-| `willReturn(value)`       | Sets a return value                                                 |
-| `paramIsType(i, type)`    | Asserts the parameter at index `i` is of the specified type         |
-| `paramHasDefault(i, val)` | Asserts that the parameter at index `i` has the given default value |
-| `paramIsOptional(i)`      | Checks if the parameter is optional                                 |
-| `paramIsReference(i)`     | Ensures the parameter is passed by reference                        |
-| `hasDocComment()`         | Validates that the method has a docblock                            |
-| `isPublic()`              | Ensures the method has public visibility                            |
+| Feature                      | Description                                                              |
+| ---------------------------- | ------------------------------------------------------------------------ |
+| `called(n)`                  | Ensures the method is called exactly `n` times                           |
+| `hasBeenCalled()`            | Verifies that the method has been called at least once                   |
+| `calledAtLeast(n)`           | Asserts the method is called `n` times or more                           |
+| `calledAtMost(n)`            | Asserts the method is called `n` times or fewer                          |
+| `withArguments(...args)`     | Validates arguments passed to the method in its first call               |
+| `withArgumentsForCalls(...)` | Validates arguments for multiple calls with distinct expected parameters |
+| `withArgumentAt(pos, val)`   | Validates a specific argument position for a given call index            |
+| `willReturn(val)`            | Defines return value(s) for the method                                   |
+| `hasReturn()`                | Checks if a return value has been set                                    |
+| `willThrow(throwable)`       | Configures the method to throw an exception every time it's called       |
+| `willThrowOnce(throwable)`   | Configures the method to throw an exception only once                    |
+| `keepOriginal()`             | Executes the original method instead of mocking it                       |
+| `hasClass(name)`             | Asserts that the method belongs to the specified class                   |
+| `hasName(name)`              | Asserts that the method has the specified name                           |
+| `isStatic()`                 | Ensures the method is static                                             |
+| `isPublic()`                 | Ensures the method has public visibility                                 |
+| `isPrivate()`                | Ensures the method has private visibility                                |
+| `isProtected()`              | Ensures the method has protected visibility                              |
+| `isAbstract()`               | Ensures the method is abstract                                           |
+| `isFinal()`                  | Ensures the method is final                                              |
+| `returnsReference()`         | Checks if the method returns by reference                                |
+| `hasReturnType()`            | Checks if the method declares a return type                              |
+| `isReturnType(type)`         | Validates that the return type matches the expected type                 |
+| `isConstructor()`            | Checks if the method is a constructor (`__construct`)                    |
+| `isDestructor()`             | Checks if the method is a destructor (`__destruct`)                      |
+| `hasParams()`                | Ensures the method has at least one parameter                            |
+| `hasNotParams()`             | Ensures the method has no parameters                                     |
+| `hasParamsTypes()`           | Checks that all parameters have type declarations                        |
+| `paramsHasCount(n)`          | Ensures the method has exactly `n` parameters                            |
+| `paramIsType(i, type)`       | Asserts the parameter at index `i` has the specified data type           |
+| `paramHasType(i)`            | Checks if parameter at index `i` has a type declared                     |
+| `paramHasDefault(i, val)`    | Checks if parameter at index `i` has the given default value             |
+| `paramIsOptional(i)`         | Checks if parameter at index `i` is optional                             |
+| `paramIsReference(i)`        | Checks if parameter at index `i` is passed by reference                  |
+| `paramIsVariadic(i)`         | Checks if parameter at index `i` is variadic (spread)                    |
+| `paramIsSpread(i)`           | Alias of `paramIsVariadic(i)`                                            |
+| `hasDocComment()`            | Validates that the method has a docblock                                 |
+| `hasFileName(name)`          | Ensures the method is defined in the given file name                     |
+| `startLine(n)`               | Checks if the method starts on the specified line number                 |
+| `endLine(n)`                 | Checks if the method ends on the specified line number                   |
 
 ---
 
@@ -68,19 +101,7 @@ $unit->group("Testing a User Registration Service", function(TestCase $case) {
 
 When a mock expectation fails, Unitary shows a detailed, test-aware error message:
 
-```text
- FAIL  ..tests/UserServiceTest.php - Testing a User Registration Service
-
-Error: Mock method "sendWelcomeEmail" failed
-
-Failed on line 31:
- → $mailer = $case->mock(Mailer::class, function (MethodRegistry $method) {
-   called         → failed
-                    Expected: "1" | Actual: "2"
-
-Passed: 3/4 - 448b06d9127fbca608168e769acd3c7c2
-Total: 3/4 • Peak memory usage: 5194.6 KB
-```
+![Unitary CLI response](https://wazabii.se/github-assets/unitary/unitary-cli-mock-fail.png)
 
 ---
 

@@ -5,7 +5,7 @@ sidebar_position: 2
 
 # Getting Started in under a minute
 
-Welcome to **Unitary**, a expressive unit testing library built for modern PHP projects. Follow this guide to get up and running with Unitary in just a few steps.
+Welcome to **Unitary**, a expressive unit testing framework built for modern PHP projects. Follow this guide to get up and running with Unitary in just a few steps.
 
 ---
 

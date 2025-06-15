@@ -156,10 +156,10 @@ It all depends on where the assert is used.
 Assert inside validation can be used for multiple purposes, either by adding custom validations:
 
 ```php
-$unit->group("Example API Request", function(TestCase $case) {
+$unit->group("Example assert", function(TestCase $case) {
 
-  $case->validate($value, function(Expect $expect) {
-      assert(1 === 2, "This will fail");
+  $case->validate(1, function(Expect $expect) {
+      assert($expect->val() === 2, "This will fail");
   });
   
 });
@@ -172,14 +172,20 @@ You can also add a second argument to `assert()` lets you set a custom failure m
 Unitary will capture and display.
 
 ```php
-$unit->group("Example API Request", function(TestCase $case) {
+$unit->group("Example API Response", function(TestCase $case) {
 
-  $case->validate($value, function(Expect $expect) {
-      assert($expect->isJson()->isEqualTo('{"ok":true}')->isValid(), "Expected JSON structure did not match.");
-  });
-  
+    $case->validate('{"response":{"status":200,"message":"ok"}}', function(Expect $expect) {
+
+        $expect->isJson()->hasJsonValueAt("response.status", 404);
+        
+        assert($expect->isValid(), "Expected JSON structure did not match.");
+        
+    });
+
 });
 ```
+#### Response:
+![Unitary CLI response](https://wazabii.se/github-assets/unitary/unitary-cli-assert-fail.png)
 
 ### Assert inside `group()`:
 You can also use do a `assert()` directly inside of a `group()` (outside `validate()`) and can be used for
@@ -194,6 +200,10 @@ $unit->group("Example of assert in group", function(TestCase $case) {
     assert(1 === 2, "This is a error message");
 });
 ```
+
+#### Response:
+![Unitary CLI response](https://wazabii.se/github-assets/unitary/unitary-cli-assert-grp-fail.png)
+
 _Using assert here is more useful when you are writing your test and to debug them_
 
 This approach is deliberate: developers can combine soft validation with hard stops as needed — gaining control over test flow in a way that traditional frameworks often obscure.

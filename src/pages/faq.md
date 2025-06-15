@@ -74,7 +74,7 @@ Yes — fully compatible with PHP 8 and newer.
 
 ---
 
-## Is this library production-ready?
+## Is this framework production-ready?
 
 Yes. It has been tested and used in production.  
 Still, Unitary your specific use cases during implementation.

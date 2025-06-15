@@ -1,99 +1,161 @@
 ---
-title: Method Expectations
+title: Method Expectations & Behaviors
 ---
 
-## Return Values & Side Effects
 
-When mocking methods in Unitary, you often need to define **what they return** and optionally **simulate side effects** such as exceptions, delayed responses, or dynamic output based on input arguments.
 
-This guide explains how to configure return values and side effects using the built-in `mocker()` syntax.
+# Method Expectations & Behaviors
+
+Even though Unitary allows you to mock classes in a single line, there are times when you may want more control.
+
+When mocking methods in Unitary, you can optionally define how they should behave and how they are expected to be used.  This guide explains how to configure method behaviors and expectations using the `mock()` and `method()` APIs when needed.
 
 ---
 
-### ✅ Return Values
+## Return Values
 
-To specify a return value for a mocked method:
+To specify a static return value:
 
 ```php
-$m = $unit->mocker(SomeClass::class)
-    ->method('getCount')
-    ->willReturn(42);
+$someClass = $case->mock(SomeClass::class, function (MethodRegistry $method) {
+    $method->method('getCount')->willReturn(42);
+});
 ```
 
-> Whenever `getCount()` is called on the mock, it will return `42`.
+Whenever `getCount()` is called on the mock, it returns `42`.
 
 ---
 
-### 🔁 Return Values by Call Order
+## Return Values by Call Order
 
-You can also define different return values for each subsequent call:
+You can define a sequence of return values for successive calls:
 
 ```php
-$m = $unit->mocker(SomeClass::class)
-    ->method('getId')
-    ->willReturn(1001, 1002, 1003);
+$someClass = $case->mock(SomeClass::class, function (MethodRegistry $method) {
+    $method->method('getId')->willReturn(1001, 1002, 1003);
+});
 ```
 
-> On the first call, `getId()` returns `1001`, on the second `1002`, and so on.
+On the first call, it returns `1001`; on the second, `1002`; on the third, `1003`, and so on.
 
 ---
 
-### 🔧 Dynamic Return Values (Closures)
+## Return Values Based on Arguments (`wrap()`)
 
-Use a closure to return a value based on the method arguments:
+If you need the method to respond dynamically — or reuse real internal logic — use `wrap()`.
 
 ```php
-$m = $unit->mocker(SomeClass::class)
-    ->method('calculate')
-    ->willReturn(function ($a, $b) {
+$someClass = $case->mock(SomeClass::class, function (MethodRegistry $method) {
+    $method->method('calculate')->wrap(function ($a, $b) {
         return $a + $b;
     });
+});
 ```
 
-> This makes the mock behave dynamically, like a real method.
-
----
-
-### ⚠️ Side Effects (Exceptions)
-
-You can simulate exceptions to test error-handling logic:
+The closure replaces the method body and receives the arguments passed to it.
+You're also **executing inside the mocked class**, so you have full access to `$this`:
 
 ```php
-$m = $unit->mocker(SomeClass::class)
-    ->method('connect')
-    ->willThrow(new \RuntimeException("Connection failed"));
+$method->method('buildMessage')->wrap(function () {
+    return $this->template('hello', ['name' => 'Daniel']);
+});
 ```
 
-> When `connect()` is called, a `RuntimeException` is thrown.
+This gives you complete control while still staying inside the mock.
 
 ---
 
-### 🌀 Mixing Return & Throw
+## Throwing Exceptions
 
-If you want the first call to throw and the second to return a value:
+To simulate errors, you can configure a method to throw:
 
 ```php
-$m = $unit->mocker(SomeClass::class)
-    ->method('fetch')
-    ->willThrowOnce(new \Exception("Failed"))
-    ->willReturn("Success");
+$someClass = $case->mock(SomeClass::class, function (MethodRegistry $method) {
+    $method->method('connect')->willThrow(new \RuntimeException('Connection failed'));
+});
 ```
 
-> `willThrowOnce()` only throws on the first call. `willReturn()` applies to the rest.
+Whenever `connect()` is called, a `RuntimeException` is thrown.
 
 ---
 
-### 🧪 Tips
+## Mixing `throw` and `return`
 
-* Use `willReturn(...)` for predictable results.
-* Use closures for dynamic behavior or conditional logic.
-* Use `willThrow(...)` or `willThrowOnce(...)` to test error handling.
-* Chain these configurations to simulate realistic usage patterns.
+You can combine `willThrowOnce()` and `willReturn()` to define behavior over time:
+
+```php
+$someClass = $case->mock(SomeClass::class, function (MethodRegistry $method) {
+    $method->method('fetch')
+        ->willThrowOnce(new \Exception('Failed'))
+        ->willReturn('Success');
+});
+```
+
+The first call to `fetch()` throws an exception; the second returns `'Success'`.
 
 ---
 
-### 📚 See Also
+## Argument Expectations
 
-* [Creating Mocks](../creating-mocks)
-* [Method Expectations](../method-expectations)
-* [Mocking Final & Private Methods](../mocking-final-private)
+You can ensure the method receives exact arguments when called:
+
+```php
+$someClass = $case->mock(SomeClass::class, function (MethodRegistry $method) {
+    $method->method('addFromEmail')
+        ->withArguments('john.doe@gmail.com', 'John Doe');
+});
+```
+
+This verifies that the method is called with the given values in the correct order.
+
+---
+
+## Arguments per Call
+
+If you expect different arguments on each call:
+
+```php
+$someClass = $case->mock(SomeClass::class, function (MethodRegistry $method) {
+    $method->method('addFromEmail')
+        ->withArgumentsForCalls(
+            ['john.doe@gmail.com', 'John Doe'],
+            ['jane.doe@gmail.com', 'Jane Doe']
+        );
+});
+```
+
+The first call must match the first argument set, the second call the second set, and so on.
+
+---
+
+## Call Count Expectations
+
+You can also enforce how many times a method must be called:
+
+```php
+$someClass = $case->mock(SomeClass::class, function (MethodRegistry $method) {
+    $method->method('save')->called(1);
+});
+```
+
+This ensures `save()` is called exactly once. If not, the test fails.
+
+### Available call count methods:
+
+| Method       | Description                              |
+| ------------ | ---------------------------------------- |
+| `called(1)`  | Must be called exactly once              |
+| `called(0)`  | Must never be called                     |
+| `atLeast(2)` | Must be called two or more times         |
+| `atMost(3)`  | Must not be called more than three times |
+
+---
+
+## Additional Notes
+
+* `willReturn(...)` sets fixed outputs.
+* `wrap(...)` gives you dynamic behavior and full class context.
+* `willThrow(...)` and `willThrowOnce(...)` simulate failure scenarios.
+* `withArguments(...)` and `called(...)` help you assert correct usage.
+* You can combine all of them for powerful test behavior simulation.
+
