@@ -17,7 +17,7 @@ readable callback blocks.
 ```php
 use MaplePHP\Unitary\{Unit, TestCase, TestConfig, Expect};
 
-$unit->group("Example API Request", function(TestCase $case) {
+group("Example API Request", function(TestCase $case) {
     
     $request = new Request("GET", "https://example.com/?page=1&slug=hello-world");
 
@@ -46,7 +46,7 @@ That’s the format. Just your values, your expectations and readable code. Ther
 
 ## Skip a test
 
-Sometime you want to skip the test in validation, if you are for example not finished writing the tests you want to finish them without stress and on your occur. 
+Sometime you want to skip the test in validation, if you are for example not finished writing the tests you want to finish them without stress and on your own pace. 
 Skipped test will be present on the test list but will not show any failed and not completed tests cluttering up the list with out reason.
 
 ```php
@@ -54,7 +54,7 @@ use MaplePHP\Unitary\{Unit, TestCase, TestConfig, Expect};
 
 $config = TestConfig::make("Testing mocking library")->withSkip();
 
-$unit->group($config, function (TestCase $case) {
+group($config, function (TestCase $case) {
     // Your tests here ->
 });
 ```
@@ -65,7 +65,7 @@ $unit->group($config, function (TestCase $case) {
 ---
 
 ## Show/open a test
-What is cool in Unitary, every test group has a unique hash, you can use thisto show/open up any test group 
+What is cool in Unitary, every test group has a unique hash, you can use this to show/open up any test group 
 you wish (any group you want, passed, failed or skipped) and then get the complete validation information. 
 This lets us filter away every other test and only show the test we are intrested in and also open it up 
 for more information. 
@@ -95,12 +95,12 @@ use MaplePHP\Unitary\{Unit, TestCase, TestConfig, Expect};
 $config = TestConfig::make("Example API Request")
     ->withName("unitary");
 
-$unit->group($config, function (TestCase $case) {
+group($config, function (TestCase $case) {
     // Your tests here ->
 });
 
 // Can use the configurations immutability to your advantage if you wish
-$unit->group($config->withSubject("Testing mocking library"), function(TestCase $case) {
+group($config->withSubject("Testing mocking library"), function(TestCase $case) {
     // Your tests here ->
 });
 ```
@@ -124,7 +124,7 @@ That is why we have built in functionality to handle this properly.
 You just need to dump something in a group or validation and let Unitary handle the rest.
 
 ```php
-$unit->group("Example API Request", function(TestCase $case) {
+group("Example API Request", function(TestCase $case) {
 
   $shoppingList = ['milk', 'cheese', 'bread', 'soap'];
  
@@ -135,7 +135,7 @@ $unit->group("Example API Request", function(TestCase $case) {
 #### Response:
 ![Unitary CLI response](https://wazabii.se/github-assets/unitary/unitary-cli-note.png)
 
-_**Note:** If you where tho to try to print something outside of group or validation method
+_**Note:** If you where to try to print something outside of group or validation method
 then it will not be visible becouse it is outside of stream. You can tho still show this
 print by simply adding die or exit after your print._
 
@@ -156,7 +156,7 @@ It all depends on where the assert is used.
 Assert inside validation can be used for multiple purposes, either by adding custom validations:
 
 ```php
-$unit->group("Example assert", function(TestCase $case) {
+group("Example assert", function(TestCase $case) {
 
   $case->validate(1, function(Expect $expect) {
       assert($expect->val() === 2, "This will fail");
@@ -172,7 +172,7 @@ You can also add a second argument to `assert()` lets you set a custom failure m
 Unitary will capture and display.
 
 ```php
-$unit->group("Example API Response", function(TestCase $case) {
+group("Example API Response", function(TestCase $case) {
 
     $case->validate('{"response":{"status":200,"message":"ok"}}', function(Expect $expect) {
 
@@ -196,7 +196,7 @@ more critical conditions:
 * This is intended for **strict stop conditions**, where further validations are meaningless unless a critical state is met.
 
 ```php
-$unit->group("Example of assert in group", function(TestCase $case) {
+group("Example of assert in group", function(TestCase $case) {
     assert(1 === 2, "This is a error message");
 });
 ```

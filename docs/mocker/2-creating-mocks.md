@@ -11,7 +11,7 @@ Unitary's mocking engine is designed to make mocking in PHP simpler, more expres
 ## Basic Example
 
 ```php
-$unit->group("Mocking a PSR-7 Stream", function(TestCase $case) {
+group("Mocking a PSR-7 Stream", function(TestCase $case) {
     // Create a mock of a PSR-7 StreamInterface
     $stream = $case->mock(StreamInterface::class);
 
@@ -29,10 +29,16 @@ _This is actually all you need to do to mock a class._
 
 You can configure some method behaviors in Unitary mocker. This is done via a `MethodRegistry` callback passed as the second argument to `mock()`.
 
+This is similar to exposing the mocked class, giving you full control to define expectations and behaviors for specific methods within it.
+
 ```php
-$unit->group("Testing a User Registration Service", function(TestCase $case) {
+group("Testing a User Registration Service", function(TestCase $case) {
 
     $mailer = $case->mock(Mailer::class, function(MethodRegistry $method) {
+
+        // Specify "all" the methods from the Mailer class here that you want to
+        // configure with custom expectations and return behaviors.
+
         $method->method("sendWelcomeEmail")
             ->called(1)
             ->paramIsType(0, 'string')

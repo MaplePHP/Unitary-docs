@@ -57,12 +57,12 @@ export default function Home() {
           <div className={"row reverse"}>
             <div className={"col col--6 flex align-items-center bg-code-block overflow-auto"}>
               <CodeBlock language="php">
-{`$unit->group("Has a about page", function(TestCase $case) {
+{`group("Has a about page", function(TestCase $case) {
 
     $response = $this->get("/about");
-    $stausCode = $response->getStatusCode();
+    $statusCode = $response->getStatusCode();
     
-    $case->validate($stausCode, function(Expect $valid) {
+    $case->validate($statusCode, function(Expect $valid) {
         $valid->isHttpSuccess();
     });
 });
@@ -72,7 +72,7 @@ export default function Home() {
             <div className={"col col--6"}>
               <Heading as="h2">User-friendly</Heading>
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam incidunt inventore iste necessitatibus, quibusdam quos repellendus rerum vitae voluptate voluptatum. Aut consectetur deserunt dignissimos ducimus est expedita magni officiis possimus, provident quibusdam, quod rem repellendus saepe tenetur vel veniam voluptate. A animi beatae cupiditate debitis, dolorum eaque, eveniet ex expedita, explicabo fugiat illum iste molestias nemo quam reiciendis repudiandae unde.
+                Unitary is a modern PHP testing framework that focuses on clarity, precision, and developer control. It supports both unit and integration testing, with built-in support for mocking and structured validation. Rather than following the conventional approach of relying on exceptions and rigid test structures, Unitary offers a validation-first philosophy. Tests are grouped, scoped, and executed with expressive callbacks that center the developer’s intent.
               </p>
               <a className={"c-button"} href={"/Unitary/docs/getting-started"}>Get started</a>
             </div>
@@ -82,7 +82,7 @@ export default function Home() {
           <div className={"row"}>
             <div className={"col col--6 flex align-items-center bg-code-block overflow-auto"}>
               <CodeBlock language="php">
-                {`$unit->group("Example API Request", function(TestCase $case) {
+                {`group("Example API Request", function(TestCase $case) {
 
   $case->validate($value, function(Expect $expect) {
       
@@ -113,7 +113,7 @@ export default function Home() {
           <div className={"row reverse"}>
             <div className={"col col--6 flex align-items-center bg-code-block overflow-auto"}>
               <CodeBlock language="php">
-                {`$unit->group("Mocking is now fun", function(TestCase $case) {
+                {`group("Mocking is now fun", function(TestCase $case) {
 
     // Mocked!
     $stream = $case->mock(Stream::class);

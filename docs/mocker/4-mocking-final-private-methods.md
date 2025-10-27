@@ -60,7 +60,7 @@ class NotificationService {
 #### Then in you test, just mock the interface:
 
 ```php
-$unit->group('Sends welcome email', function ($test) {
+group('Sends welcome email', function ($test) {
     $mailer = $test->mock(MailerInterface::class, function ($mock) {
         $mock->method('send')->willReturn(true)->called(1);
     });

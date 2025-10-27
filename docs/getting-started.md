@@ -41,7 +41,7 @@ You can also get a boilerplate code with the command `php vendor/bin/unitary --t
 use MaplePHP\Unitary\{Unit, TestCase, TestConfig, Expect};
 
 $unit = new Unit();
-$unit->group("Your test subject", function (TestCase $case) {
+group("Your test subject", function (TestCase $case) {
 
     $case->validate("Your test value", function(Expect $valid) {
         $valid->isString();
