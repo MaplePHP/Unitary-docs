@@ -2,26 +2,35 @@
 title: CLI & Execution
 sidebar_position: 3
 ---
+import ConfigTable from './_includes/config-table.mdx';
+
 
 # CLI & Execution
 
-Unitary provides a powerful CLI to run and manage tests efficiently. Below is a complete guide to all supported command-line options and their usage.
+Unitary includes a flexible, developer-friendly CLI for running, inspecting, and managing your tests.
+This page documents all available commands, options, and examples.
 
 ---
 
 ## Run All Tests
 
-Runs all available tests from the default path.
+Runs every test Unitary can discover in the default test path.
 
 ```bash
 php vendor/bin/unitary
+```
+
+or explicitly:
+
+```bash
+php vendor/bin/unitary run
 ```
 
 ---
 
 ## Show Help
 
-Displays the help menu with all available flags and options.
+Displays the built-in help menu, listing all supported commands, flags, and descriptions.
 
 ```bash
 php vendor/bin/unitary --help
@@ -29,92 +38,113 @@ php vendor/bin/unitary --help
 
 ---
 
-## Get Boilerplate Code
+## Generate a Test Template
 
-Returns boilerplate test code that you can copy and paste into your test files.
+Creates a ready-to-use boilerplate test you can copy into your test files.
 
 ```bash
-php vendor/bin/unitary --template
+php vendor/bin/unitary template
 ```
 
 ---
 
 ## Show Only Errors
 
-Displays only the tests that failed or produced validation errors.
+Limits CLI output to tests that failed or produced validation errors.
+Ideal when you want a concise summary of what went wrong.
 
 ```bash
-php vendor/bin/unitary --errors-only
+php vendor/bin/unitary --errorsOnly
 ```
 
 ---
 
-## Run Specific Test by Hash
+## Run a Test by Hash
 
-After running a test, a hash key is displayed. The `--show` option accepts this hash. It will run **only the validations** for the specific test group identified by that hash:
+Each executed test group is assigned a unique hash ID.
+You can re-run a specific test by providing its hash:
 
 ```bash
-php vendor/bin/unitary --show=b0620ca8ef6ea7598eaed56a530b1983
+php vendor/bin/unitary --show=b0620ca8ef6ea7598e5ed56a530b1983
 ```
+
+> **Tip:** Hashes are displayed in the CLI output after each test run.
 
 ---
 
-## Naming and Running Specific Test Groups
+## Run a Named Test Group
 
-You can assign names to one or multiple test groups, even reuse the same name across different test files and groups. This allows you to selectively run or inspect specific tests via the CLI.
+You can name your test groups and run them directly by name.
+Names are defined via a `TestConfig` and can be reused across files.
 
-### 1. Define a Named (Manual) Test Group
-
-By using a `TestConfig` with `withName()`, you can define a test group that is excluded from the default batch run:
+### Define a Named Group
 
 ```php
-$config = TestConfig::make("This is a test message")->withName('unitary');
+$config = TestConfig::make("This is a test message")
+    ->withName('unitary');
 
 group($config, function (TestCase $case) {
     // Your test cases go here
 });
 ```
 
-### 2. Run Only That Test Group via CLI
-
-Use the `--show` flag with the name you set via `withName()`:
+### Run by Name
 
 ```bash
 php vendor/bin/unitary --show=unitary
 ```
 
-> **Note:** If the selected test was marked as skipped, running it with `--show` will **force it to execute and display** its validations.
+> **Note:**
+>
+> * Named groups can be reused across multiple test files.
+> * If a test group was marked as *skipped*, running it by name will **force it to execute** and display its validations.
 
 ---
 
-## Change Test Path
+## Configuration options
 
-Run all tests under a custom directory (absolute or relative):
+<ConfigTable showArrayTypes={false} />
+
+
+### Change the Test Path
+
+Specify a custom directory (absolute or relative) where Unitary should search for tests.
 
 ```bash
-php vendor/bin/unitary --path="/tests/"
+php vendor/bin/unitary --path="tests/"
 ```
 
 ---
 
-## Exclude Files or Directories
+### Exclude Files or Directories
 
-Use the `--exclude` flag to ignore specific files or directories (relative to `--path`):
+Exclude specific files or folders (comma-separated, relative to the `--path` value):
 
 ```bash
-php vendor/bin/unitary --exclude="./tests/unitary-query-php, tests/otherTests/*, */extras/*"
+php vendor/bin/unitary --exclude="tests/legacy/*, */extras/*"
 ```
 
-> **Note:** If you add the exclude argument, you must manually exclude the `vendor` directory if needed.
+> **Note:**
+> The `vendor` directory is *not* excluded automatically — add it manually if needed.
 
 ---
 
-## Smart Search
+### Smart Search
 
-Smart Search will always locate the closest `tests` directory from the path it is executed from. It works by attempting to find tests in the specified path, and if no tests are found, it moves up one parent directory and tries again. This continues until test files are found or the root is reached.
+Enables recursive test discovery.
+If no tests are found in the provided path, Unitary will automatically move upward through parent directories until a valid test suite is located.
 
 ```bash
-php vendor/bin/unitary --path="app/Http" --smart-search
+php vendor/bin/unitary --path="app/Http" --smartSearch
 ```
 
-> **Note:** Smart Search can be useful in setups where tests exist in different locations, such as submodules or non-standard directory structures.
+> **Tip:**
+> Smart Search is perfect for monorepos, submodules, or projects with tests in non-standard locations.
+
+---
+
+
+## Summary
+
+The Unitary CLI is designed for flexibility, from full test runs to precise, targeted executions using names, hashes, or paths.
+Combine options like `--smartSearch`, `--errorsOnly`, and `--failFast` to fine-tune your testing workflow and focus on what matters most.

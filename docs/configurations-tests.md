@@ -3,8 +3,7 @@ sidebar_position: 5
 ---
 
 
-
-# Configurations
+# Configure tests
 
 Unitary allows limited but powerful configuration options for your test groups. These configurations are applied using the `TestConfig` class.
 

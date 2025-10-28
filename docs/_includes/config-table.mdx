@@ -1,0 +1,90 @@
+import React from 'react';
+
+/**
+ * Configuration table component
+ * @param {boolean} showArrayTypes - if false, array types are removed from the "Accepted Values" column
+*/
+
+export default function ConfigTable({showArrayTypes = true}) {
+  const filterValue = () => (showArrayTypes) ? ', array<int, string>' : '';
+  return (
+    <table>
+      <thead>
+      <tr>
+        <th>Key</th>
+        <th>Description</th>
+        <th>Accepted Values</th>
+        <th>Default</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td><strong>discoverPattern</strong></td>
+        <td>Overrides default discovery behavior with directory names or filename patterns.</td>
+        <td><code>false, string</code></td>
+        <td><code>false</code></td>
+      </tr>
+      <tr>
+        <td><strong>verbose</strong></td>
+        <td>Displays warnings and extended diagnostic output.</td>
+        <td><code>bool</code></td>
+        <td><code>false</code></td>
+      </tr>
+      <tr>
+        <td><strong>show</strong></td>
+        <td>Runs a specific test or group by its name or hash (CLI: <code>--show=&lt;hash&#124;name&gt;</code>).</td>
+        <td><code>string, false</code></td>
+        <td><code>false</code></td>
+      </tr>
+      <tr>
+        <td><strong>errorsOnly</strong></td>
+        <td>Hides successful tests and only shows failed or invalid results.</td>
+        <td><code>bool</code></td>
+        <td><code>false</code></td>
+      </tr>
+      <tr>
+        <td><strong>failFast</strong></td>
+        <td>Stops test execution immediately if error occurs or throws an exception.</td>
+        <td><code>bool</code></td>
+        <td><code>false</code></td>
+      </tr>
+      <tr>
+        <td><strong>alwaysShowFiles</strong></td>
+        <td>Always displays the full file path, even for passing tests.</td>
+        <td><code>bool</code></td>
+        <td><code>false</code></td>
+      </tr>
+      <tr>
+        <td><strong>smartSearch</strong></td>
+        <td>Enables recursive searching from the defined path upwards until valid test files are found.</td>
+        <td><code>bool</code></td>
+        <td><code>false</code></td>
+      </tr>
+      <tr>
+        <td><strong>path</strong></td>
+        <td>Defines where Unitary should look for test files.</td>
+        <td><code>false, string{filterValue()}</code></td>
+        <td><code>false</code></td>
+      </tr>
+      <tr>
+        <td><strong>exclude</strong></td>
+        <td>Defines files or directories to skip during discovery.</td>
+        <td><code>false, string{filterValue()}</code></td>
+        <td><code>false</code></td>
+      </tr>
+      <tr>
+        <td><strong>timezone</strong></td>
+        <td>Sets the default timezone for all test executions.</td>
+        <td><code>string</code> (valid timezone)</td>
+        <td><code>'Europe/Stockholm'</code></td>
+      </tr>
+      <tr>
+        <td><strong>locale</strong></td>
+        <td>Defines the locale for formatted outputs such as date strings.</td>
+        <td><code>string</code> (e.g. <code>en_US</code>, <code>sv_SE</code>)</td>
+        <td><code>'en_US'</code></td>
+      </tr>
+      </tbody>
+    </table>
+  );
+}
