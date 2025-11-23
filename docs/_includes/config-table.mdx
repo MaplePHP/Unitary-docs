@@ -19,7 +19,7 @@ export default function ConfigTable({showArrayTypes = true}) {
       </thead>
       <tbody>
       <tr>
-        <td><strong>discoverPattern</strong></td>
+        <td><strong>discover-pattern</strong></td>
         <td>Overrides default discovery behavior with directory names or filename patterns.</td>
         <td><code>false, string</code></td>
         <td><code>false</code></td>
@@ -32,30 +32,36 @@ export default function ConfigTable({showArrayTypes = true}) {
       </tr>
       <tr>
         <td><strong>show</strong></td>
-        <td>Runs a specific test or group by its name or hash (CLI: <code>--show=&lt;hash&#124;name&gt;</code>).</td>
+        <td>Runs a specific test or group by its name or hash (CLI: <code>show=&lt;hash&#124;name&gt;</code>).</td>
         <td><code>string, false</code></td>
         <td><code>false</code></td>
       </tr>
       <tr>
-        <td><strong>errorsOnly</strong></td>
+        <td><strong>errors-only</strong></td>
         <td>Hides successful tests and only shows failed or invalid results.</td>
         <td><code>bool</code></td>
         <td><code>false</code></td>
       </tr>
       <tr>
-        <td><strong>failFast</strong></td>
+        <td><strong>type</strong></td>
+        <td>The expected response type (default, junit, xml).</td>
+        <td><code>false, string</code></td>
+        <td><code>false</code></td>
+      </tr>
+      <tr>
+        <td><strong>fail-fast</strong></td>
         <td>Stops test execution immediately if error occurs or throws an exception.</td>
         <td><code>bool</code></td>
         <td><code>false</code></td>
       </tr>
       <tr>
-        <td><strong>alwaysShowFiles</strong></td>
+        <td><strong>always-show-files</strong></td>
         <td>Always displays the full file path, even for passing tests.</td>
         <td><code>bool</code></td>
         <td><code>false</code></td>
       </tr>
       <tr>
-        <td><strong>smartSearch</strong></td>
+        <td><strong>smart-search</strong></td>
         <td>Enables recursive searching from the defined path upwards until valid test files are found.</td>
         <td><code>bool</code></td>
         <td><code>false</code></td>

@@ -49,6 +49,6 @@ This means you don’t need to manually specify test directories — ideal for r
 
 ## Tips
 
-* You can create **multiple configurations** for different test paths or options (e.g., `--errorsOnly` or `--failFast`).
+* You can create **multiple configurations** for different test paths or options (e.g., `--errors-only` or `--fail-fast`).
 * Use **Run › Run with Coverage** if you want to see Unitary’s coverage report directly in the IDE (with Xdebug enabled).
 * For quicker access, assign a **custom keyboard shortcut** to your Unitary configuration under *Preferences › Keymap › Run Configurations*.

@@ -45,7 +45,7 @@ group("Testing a User Registration Service", function(TestCase $case) {
             ->willReturn(true);
 
         $method->method("getFromAddress")
-            ->willReturn("noreply@example.com");
+            ->willReturn("user@example.com");
     });
 
     $service = new UserService($mailer);
@@ -62,8 +62,8 @@ group("Testing a User Registration Service", function(TestCase $case) {
 | ---------------------------- | ------------------------------------------------------------------------ |
 | `called(n)`                  | Ensures the method is called exactly `n` times                           |
 | `hasBeenCalled()`            | Verifies that the method has been called at least once                   |
-| `calledAtLeast(n)`           | Asserts the method is called `n` times or more                           |
-| `calledAtMost(n)`            | Asserts the method is called `n` times or fewer                          |
+| `calledAtLeast(n)`           | Ensures the method is called `n` times or more                           |
+| `calledAtMost(n)`            | Ensures the method is called `n` times or fewer                          |
 | `withArguments(...args)`     | Validates arguments passed to the method in its first call               |
 | `withArgumentsForCalls(...)` | Validates arguments for multiple calls with distinct expected parameters |
 | `withArgumentAt(pos, val)`   | Validates a specific argument position for a given call index            |
@@ -72,8 +72,8 @@ group("Testing a User Registration Service", function(TestCase $case) {
 | `willThrow(throwable)`       | Configures the method to throw an exception every time it's called       |
 | `willThrowOnce(throwable)`   | Configures the method to throw an exception only once                    |
 | `keepOriginal()`             | Executes the original method instead of mocking it                       |
-| `hasClass(name)`             | Asserts that the method belongs to the specified class                   |
-| `hasName(name)`              | Asserts that the method has the specified name                           |
+| `hasClass(name)`             | Ensures that the method belongs to the specified class                   |
+| `hasName(name)`              | Ensures that the method has the specified name                           |
 | `isStatic()`                 | Ensures the method is static                                             |
 | `isPublic()`                 | Ensures the method has public visibility                                 |
 | `isPrivate()`                | Ensures the method has private visibility                                |
@@ -89,7 +89,7 @@ group("Testing a User Registration Service", function(TestCase $case) {
 | `hasNotParams()`             | Ensures the method has no parameters                                     |
 | `hasParamsTypes()`           | Checks that all parameters have type declarations                        |
 | `paramsHasCount(n)`          | Ensures the method has exactly `n` parameters                            |
-| `paramIsType(i, type)`       | Asserts the parameter at index `i` has the specified data type           |
+| `paramIsType(i, type)`       | Ensures the parameter at index `i` has the specified data type           |
 | `paramHasType(i)`            | Checks if parameter at index `i` has a type declared                     |
 | `paramHasDefault(i, val)`    | Checks if parameter at index `i` has the given default value             |
 | `paramIsOptional(i)`         | Checks if parameter at index `i` is optional                             |

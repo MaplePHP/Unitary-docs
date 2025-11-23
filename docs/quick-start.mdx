@@ -1,0 +1,155 @@
+---
+sidebar_position: 2
+---
+
+
+# Get Started
+
+Unitary is a validation-first testing framework built for practical PHP development.
+It treats each test as evidence — a set of validations that confirm how your code behaves in real conditions, with results that stay readable and precise even as projects grow.
+
+---
+
+## Install Unitary
+
+
+<details open>
+
+  <summary>Local installation (recommended)</summary>
+
+  Add Unitary as a development dependency:
+
+  ```bash
+  composer require --dev maplephp/unitary
+  ```
+
+  Run it using the local binary:
+
+  ```bash
+  php vendor/bin/unitary
+  ```
+
+</details>
+<details>
+
+  <summary>Global installation</summary>
+
+
+    To use Unitary in any project:
+
+    ```bash
+    composer global require maplephp/unitary
+    ```
+
+    _Ensure Composer’s global `bin` path is in your system `PATH`_
+
+    #### Now you can run:
+
+    ```bash
+    unitary
+    ```
+
+</details>
+
+_Local gives consistency. Global gives convenience. Use what fits your workflow. For most projects a local installation is best as it keeps Unitary tied to your code and version control._
+
+---
+
+## 1. Create your first test
+
+Unitary automatically finds any PHP file starting with `unitary-` in your project (excluding vendor directory). This behavior can be changed by adding a config file.
+
+> **Note** that all your project files are already autoloaded through Composer, so you can use any of your classes directly in tests, no manual includes or setup required.
+
+#### Create a file named:
+
+```
+tests/unitary-user.php
+```
+
+#### Example test
+
+```php
+use MaplePHP\Unitary\{Unit, TestCase, TestConfig, Expect};
+
+$unit = new Unit();
+
+group("Your grouped test subject", function (TestCase $case) {
+
+    $case->validate("Your test value", function(Expect $expect) {
+    
+        $expect->isString();
+        $expect->length(1, 200);
+         
+    });
+    
+});
+```
+
+You can also get a ready-to-use boilerplate code with:
+
+```bash
+php vendor/bin/unitary template
+```
+
+---
+
+## 2. Run your tests
+
+Execute all discovered test groups:
+
+```bash
+php vendor/bin/unitary
+```
+
+Show only failed validations:
+
+```bash
+php vendor/bin/unitary --errors-only
+```
+
+For help and all CLI options:
+
+```bash
+php vendor/bin/unitary --help
+```
+
+---
+
+## No configuration needed
+
+You don’t need to configure anything to start testing, Unitary runs the moment it’s installed.
+It automatically discovers your test files, autoloads your project through Composer and prints clear validation results without any complicated setup.
+
+When you want to customize its behavior, you can do this through the CLI or by adding a configuration file.
+
+[Read Run & Configure for more information →](/docs/run-and-configure)
+
+---
+
+<details>
+  <summary>Add a optional Composer script</summary>
+
+  In your `composer.json`:
+
+  ```json
+  "scripts": {
+    "test": "php vendor/bin/unitary"
+  }
+  ```
+
+  Run with:
+
+  ```bash
+  composer test
+  ```
+
+  Pass additional arguments using `--`:
+
+  ```bash
+  composer test -- --help
+  ```
+
+</details>
+
+

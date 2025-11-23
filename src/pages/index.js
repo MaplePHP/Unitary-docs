@@ -50,30 +50,36 @@ export default function Home() {
     <Layout
       title={`Hello from ${siteConfig.title}`}
       description="Description will go into a meta tag in <head />">
-      <HomepageHeader />
+      <HomepageHeader/>
       <main>
 
         <section className={"container box-text"}>
           <div className={"row reverse"}>
             <div className={"col col--6 flex align-items-center bg-code-block overflow-auto"}>
               <CodeBlock language="php">
-{`group("Has a about page", function(TestCase $case) {
+                {`group("About API page", function(TestCase $case) {
 
     $response = $this->get("/about");
-    $statusCode = $response->getStatusCode();
-    
-    $case->validate($statusCode, function(Expect $valid) {
-        $valid->isHttpSuccess();
-    });
+
+    // Validate that the request was successful
+    $case->validate($response->getStatusCode(), function(Expect $expect) {
+         $expect->isHttpSuccess();
+     });
+
+    // Validate that the response returns valid JSON
+    $case->validate($response->getBody()->getContents(), function(Expect $expect) {
+         $expect->isJson();
+         $expect->hasJsonValueAt("data.slug", "about");
+         
+    })->describe("Check json response");
 });
+
 `}
               </CodeBlock>
             </div>
             <div className={"col col--6"}>
-              <Heading as="h2">User-friendly</Heading>
-              <p>
-                Unitary is a modern PHP testing framework that focuses on clarity, precision, and developer control. It supports both unit and integration testing, with built-in support for mocking and structured validation. Rather than following the conventional approach of relying on exceptions and rigid test structures, Unitary offers a validation-first philosophy. Tests are grouped, scoped, and executed with expressive callbacks that center the developer’s intent.
-              </p>
+              <Heading as="h2">Validation-First Testing</Heading>
+              <p>Unitary is a modern PHP testing framework that reimagines what unit testing can be — simple, intuitive, and enjoyable. It feels natural and obvious, giving you powerful validation tools without forcing you to over-describe or over-structure your tests. With over 100 built-in validations, the ability to mix unit and integration-style testing, and built-in mocking capabilities, Unitary lets you test real-world behavior, from isolated logic to complex interactions and all within one consistent framework.</p>
               <a className={"c-button"} href={"/Unitary/docs/getting-started"}>Get started</a>
             </div>
           </div>
@@ -83,16 +89,9 @@ export default function Home() {
             <div className={"col col--6 flex align-items-center bg-code-block overflow-auto"}>
               <CodeBlock language="php">
                 {`group("Example API Request", function(TestCase $case) {
-
-  $case->validate($value, function(Expect $expect) {
-      
-      assert(1 === 2, "This will fail");
-      //assert(1 === 2);
-  });
-  
-  $case->validate($value, function(Expect $expect) {
-      return 1 === 2;
-  });
+                  
+  $case->describe("Equal check")
+       ->assert(1 === 2, "Strict equal check failed");
 });
 `}
               </CodeBlock>
@@ -134,7 +133,9 @@ export default function Home() {
               <p><strong>Mocking should never feel like a necessary evil. With Unitary, it doesn’t.
                 It feels like a superpower.</strong></p>
               <p>
-                Mocking in PHP has never felt this smooth. With Unitary, you can mock classes in a single line, control methods with fluent syntax, and get intelligent defaults that just work. No boilerplate. No config hell. Just clean, expressive, powerful testing that makes you wonder how you ever did it the old way.
+                Mocking in PHP has never felt this smooth. With Unitary, you can mock classes in a single line, control
+                methods with fluent syntax, and get intelligent defaults that just work. No boilerplate. No config hell.
+                Just clean, expressive, powerful testing that makes you wonder how you ever did it the old way.
               </p>
               <a className={"c-button"} href={"/Unitary/docs/Mocker/mocker-intro"}>Read more</a>
             </div>
