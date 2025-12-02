@@ -2,38 +2,34 @@
 sidebar_position: 2
 ---
 
+
 # Write Tests
 
-Unitary makes writing unit tests simple and intuitive.
-This short guide will show you the different ways you can write and organize tests, you’ll be ready to start testing in **under three minutes**.
+Unitary follows a validation-first model: every test begins with an input and a set of expectations. Groups define the subject under test, and each validation describes one of its responsibilities with clear intent.
 
 ---
 
-## Unit Test with Validation
+## Writing Tests in Unitary
+A unitary test file can include one or more `group()`, each serving as a container for tests that validate a specific subject. Each group runs within its own isolated scope, allowing you to safely add business logic while keeping side effects and dependencies contained. You can then add multiple tests within each group.
 
-A Unitary test is composed of one or more **groups**.
-Groups exist to **describe a subject** and **contain its responsibilities**.
-Each group includes one or more validations, wrapped in clear and readable callback blocks.
 
 ```php
-use MaplePHP\Unitary\{Unit, TestCase, TestConfig, Expect};
+use MaplePHP\Unitary\{TestCase};
 
 group("Example API Request", function(TestCase $case) {
-    
+
     $request = new Request("GET", "https://example.com/?id=1&slug=hello");
 
-    $case->validate($request->getMethod(), function(Expect $expect) {
-        $expect->isRequestMethod();
-    });
-    
-    // Add multiple test in group
-    $case->validate($request->getUri()->getQuery(), function(Expect $expect) {
-        $expect->hasQueryParam("id", 1)
-               ->hasQueryParam("slug", "hello");
-    });
+    $case->expect($request->getMethod())
+        ->isRequestMethod()
+        ->validate();
+
+    $case->expect($request->getUri()->getQuery())
+        ->hasQueryParam("id", 1)
+        ->hasQueryParam("slug", "hello")
+        ->validate();
 });
 ```
-> _You can add multiple groups in one test file or seperate each in multiple test files, it is up to you and what you feel is right._
 
 #### Execute
 
@@ -45,29 +41,25 @@ php vendor/bin/unitary
 
 ![Unitary CLI response](https://wazabii.se/github-assets/unitary/unitary-cli-state-pass.png)
 
-That’s the structure: your values, your expectations, and readable code.
-Unitary includes a wide range of built-in validations — [visit the Validation API](/Unitary/validation-api) to explore them all.
-
 ---
 
-## Add descriptions
-
-Unitary is built to be predictable and transparent as such most often you do not need to add description but if it is not obvious what is validating you can add a description to both validation levels.
+## Descriptions
+Descriptions are optional and useful when the purpose of a validation isn’t immediately obvious.
 
 ```php
 group("Example API Response", function(TestCase $case) {
 
-    $jsonResponse = '{"response":{"status":200,"message":"ok"}}';
-    
-    $case->validate($jsonResponse, function(Expect $expect) {
-        $expect->isJson()
-               ->hasJsonValueAt("response.status", 404)
-               ->describe("Expected JSON structure did not match.");
-    
-    })->describe("Could not validate");
+    $json = '{"response":{"status":200,"message":"ok"}}';
 
+    $case->expect($json)
+        ->isJson()
+        ->hasJsonValueAt("response.status", 404)
+        ->describe("Expected JSON structure did not match")
+        ->validate("Checking API response code");
 });
 ```
+* `validate()`: You can define a custom heading for the validation.
+* `describe()`: Add optional notes to explain the validation and may be chained multiple times when additional clarity is needed.
 
 #### Response
 
@@ -75,23 +67,22 @@ group("Example API Response", function(TestCase $case) {
 
 ---
 
-## Assert validation
+## Hard stops
+You may chain `assert()` as the final step, replaces `validate()` to trigger a **hard stop** in the group.
+Validations below it will not run, which is helpful when later checks depend on earlier conditions or when you want to avoid cascading errors.
 
-Use `assert()` when the validation must stop the test immediately on failure.
-This triggers a hard stop inside the group, and any validations that appear below will not run.
-It is useful for preventing unwanted side effects or avoiding cascading errors when later checks depend on earlier ones.
+
 
 ```php
 group("Example API Response", function(TestCase $case) {
 
-    $jsonResponse = '{"response":{"status":200,"message":"ok"}}';
-
-    $case->validate($jsonResponse, function(Expect $expect) {
-        $expect->isJson();
-    })->assert("Describe assert error");
-
+    $case->expect('{"response":{"status":200}}')
+        ->isJson()
+        ->hasJsonValueAt("response.status", 200)
+        ->assert("Invalid JSON structure");
 });
 ```
+_Use hard stops when later checks depend entirely on earlier guarantees._
 
 #### Response
 
@@ -99,142 +90,90 @@ group("Example API Response", function(TestCase $case) {
 
 ---
 
-## Skip a Test
-
-Sometimes you may want to skip a test, for example, when it’s still being written or temporarily blocked.
-Skipped tests remain visible in the list but won’t clutter it with incomplete or failed entries.
+## Debug output
+Unitary is built to make testing feel natural. That means you can debug with normal `print_r()`, `var_dump()`, or `echo` and Unitary will capture and display the output neatly in the CLI.
 
 ```php
-use MaplePHP\Unitary\{Unit, TestCase, TestConfig, Expect};
-
-$config = TestConfig::make("Testing mocking library")->withSkip();
-
-group($config, function (TestCase $case) {
-    // Your tests here ->
+group("Debug example", function(TestCase $case) {
+    print_r(['milk', 'cheese', 'bread']);
 });
 ```
-
-#### Response
-
-![Unitary CLI response](https://wazabii.se/github-assets/unitary/unitary-cli-state-skip.png)
-
----
-
-## Show or Open a Test
-
-Every test group in Unitary has a unique **hash**.
-You can use this to open or re-run any test group — passed, failed, or skipped and see all its validation details.
-This filters out all other tests so you can focus on a single group.
-
-#### Execute
-
-```bash
-php vendor/bin/unitary --show=448b06d9127fbca608168e769acd3c7c1
-```
-
-#### Response
-
-![Unitary CLI response](https://wazabii.se/github-assets/unitary/unitary-cli-show.png)
-
-> **Note:** If a test failed, it’s automatically shown in expanded form.
-> Using `--show` also filters away every other test, showing only the one you selected.
-
----
-
-## Name and Group Tests
-
-Naming and grouping tests makes it easy to organize them across your application.
-You simply provide a name through a `TestConfig` instance, and any groups sharing that name will be grouped together.
-
-```php
-use MaplePHP\Unitary\{Unit, TestCase, TestConfig, Expect};
-
-$config = TestConfig::make("Example API Request")
-    ->withName("unitary");
-
-group($config, function (TestCase $case) {
-    // Your tests here ->
-});
-
-// Reuse configuration immutably for related groups
-group($config->withSubject("Testing mocking library"), function(TestCase $case) {
-    // Your tests here ->
-});
-```
-
-#### Execute
-
-```bash
-php vendor/bin/unitary --show=unitary
-```
-
-#### Response
-
-![Unitary CLI response](https://wazabii.se/github-assets/unitary/unitary-cli-state-grouped.png)
-
----
-
-## Debug with Prints
-
-Unitary is built to make testing feel natural.
-That means you can debug with normal `print_r()`, `var_dump()`, or `echo` and Unitary will capture and display the output neatly in the CLI.
-
-```php
-group("Example API Request", function(TestCase $case) {
-
-  $shoppingList = ['milk', 'cheese', 'bread', 'soap'];
- 
-  print_r($shoppingList); // <-- Will be shown in the CLI output
-    
-});
-```
+> **Note:**
+> Prints made *outside* of a `group()` may not appear in the CLI stream.
+> If you need to see such output, you need to call `die()` or `exit()` after printing.
 
 #### Response
 
 ![Unitary CLI response](https://wazabii.se/github-assets/unitary/unitary-cli-note.png)
 
-> **Note:**
-> Prints made *outside* of a `group()` or `validate()` block will not appear in the CLI stream.
-> If you need to see such output anyway, simply call `die()` or `exit` after printing.
-
 ---
 
-## Custom Validation
+## Advanced usage
+Use the callback-based validation when a validation needs staged or conditional logic. It supports **soft stops**, which end only the current validation block. This is ideal for dependent checks or logic that should run only after earlier conditions succeed.
+```php
+group("1. Soft stop examples", function(TestCase $case) {
 
-Unitary uniquely integrates PHP’s native assert(), turning it into both a custom validation tool and a strict stop condition. Its effect depends on where you place it.
+    $json = '{"response":{"status":200,"message":"ok"}}';
 
----
+    $case->validate($json, function(Expect $expect) {
 
-### Inside `validate()`
+        $expect->isJson()
+               ->assert("Invalid JSON"); // soft stop on failure
 
-Use it to define custom checks while keeping full CLI output and pass counting.
+        $expect->hasJsonValueAt("response.status", 200)
+               ->assert("Unexpected status"); // soft stop on failure
+    });
+
+});
+```
+
+#### Example with branching:
 
 ```php
-group("Example assert", function(TestCase $case) {
 
-  $case->validate(1, function(Expect $expect) {
-      assert($expect->val() === 2, "This will fail");
+group("2. Soft stop examples", function(TestCase $case) {
+  $case->validate($userData, function(Expect $expect) {
+
+      $expect->isArray()->assert("User data must be an array");
+
+      $data = $expect->val();
+
+      if (($data['role'] ?? null) === 'admin') {
+          $expect->hasArrayKey('permissions')
+                 ->assert("Admin missing permissions");
+      }
+
+      $expect->hasArrayKey('email');
   });
-  
+
 });
 ```
+_Use this when the validation itself needs internal structure._
 
-### Inside `group()`
+---
 
-Placing `assert()` directly inside a group (outside `validate()`) halts the group immediately. Pass counting is disabled, and execution stops at that line, useful for preconditions that must never fail.
+## Quick custom validations
+
+When a test needs logic that isn’t covered by Unitary’s built-in expectations, you can define custom checks directly.
+A native `assert()` inside a **group** creates a hard stop, while an `assert()` inside a **validation callback** becomes a soft stop and the validation is still counted.
 
 ```php
-group("Example of assert in group", function(TestCase $case) {
-    assert(1 === 2, "This is an error message");
+group("Preconditions", function(TestCase $case) {
+
+    // Hard stop: group ends immediately if this fails
+    assert(1 === 1, "Setup is invalid 1");
+
+    // Soft stop inside a validation: validation is counted
+    $case->validate($userData, function(Expect $expect) {
+        assert(1 === 1, "Setup is invalid 2");
+    });
+
+    // Custom validation returning a boolean
+    $case->validate(1, function(Expect $expect) {
+        return $expect->val() === 1;
+    });
 });
 ```
-
-#### Response
-
-![Unitary CLI response](https://wazabii.se/github-assets/unitary/unitary-cli-assert-grp-fail.png)
-
-
-This distinction allows you to combine soft validations with hard stops — a balance rarely offered by traditional testing frameworks.
 
 ---
 

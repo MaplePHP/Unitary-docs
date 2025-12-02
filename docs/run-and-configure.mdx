@@ -13,6 +13,47 @@ This chapter covers everything that happens when a test suite is executed — ho
 
 ---
 
+
+## Show a single group
+
+```bash
+php vendor/bin/unitary --show=448b06d9127fbca608168e769acd3c7c1
+```
+
+#### Response
+
+![Unitary CLI response](https://wazabii.se/github-assets/unitary/unitary-cli-show.png)
+
+---
+
+## Configure test groups
+Every individual groups can define their own configuration using TestConfig. This allows naming, skipping, or scoping tests directly in code without affecting the rest of the suite.
+
+
+```php
+$config = TestConfig::make()->withName("unitary")->withSkip();
+
+group($config->withSubject("Example API Request"), function(TestCase $case) {
+
+});
+
+group($config->withSubject("Test mocking library"), function(TestCase $case) {
+
+});
+```
+
+#### Execute
+
+```bash
+php vendor/bin/unitary --show=unitary
+```
+
+#### Response
+
+![Unitary CLI response](https://wazabii.se/github-assets/unitary/unitary-cli-state-grouped.png)
+
+---
+
 ## Running tests (CLI)
 
 The Unitary CLI is the fastest way to execute and inspect tests.
@@ -101,39 +142,6 @@ Each option listed below can be used as a CLI flag or as a key in the configurat
 They share the same names, accepted types, and default values.
 
 <ConfigTable />
-
----
-
-## Per-group configuration
-
-While CLI flags and the config file define global behavior, individual groups can define their own configuration using `TestConfig`.
-This allows naming, skipping, or scoping tests directly in code without affecting the rest of the suite.
-
-```php
-use MaplePHP\Unitary\{TestConfig, TestCase, Expect};
-
-$config = TestConfig::make("Checkout API")
-    ->withName("checkout")
-    ->withSkip(); // temporarily skip this group
-
-group($config, function (TestCase $case) {
-    // ...
-});
-```
-
-Configurations are immutable, so you can derive variations without side effects:
-
-```php
-group($config->withSubject("Refund flow"), function (TestCase $case) {
-    // ...
-});
-```
-
-Named groups can always be executed in isolation:
-
-```bash
-php vendor/bin/unitary --show=checkout
-```
 
 ---
 
