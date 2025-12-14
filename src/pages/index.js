@@ -22,17 +22,22 @@ function HomepageHeader() {
         <section className={"container"}>
           <div className={"row"}>
             <div className={"col col--6 flex align-items-center overflow-auto"}>
-              <img src="https://wazabii.se/github-assets/unitary/unitary-cli-states.png" alt=""/>
+              <img className={"unitary-shield ml-auto"} width={"253"} height={"315"} src="img/unitary-shield.svg" alt="Unitary shield"/>
             </div>
             <div className={"col col--6 padding--lg"}>
-              <h1 className={"hero__title"}>{siteConfig.title}</h1>
-              <p className="hero__subtitle"><strong>PHP Unitary</strong> is a <strong>user-friendly</strong> and robust unit testing <strong>framework</strong> designed to make writing and running tests for your PHP code easy. With an intuitive CLI interface that works on all platforms and robust validation options, Unitary makes it easy for you as a developer to ensure your code is reliable and functions as intended.</p>
-              <div className={styles.buttons}>
-                <button className={"inp-button inp-button--invert"} onClick={() => setOpen(true)}>
-                  <span>Search docs</span>
-                  <SearchShortcutKeys className={"ml-auto"}/>
-                </button>
+              <figure>
+                <img width={"214"} height={"57"} src="img/unitary-gradient-logo.svg" alt="Unitary shield"/>
+              </figure>
+              <h1 className={"headline-2 hero__title"}>Evidence-Driven testing framework</h1>
+              <h2 className={"text-base font-normal text-warning"}>A lightning-fast <strong>PHP testing framework</strong> by MaplePHP</h2>
+
+              <div className={"flex column-gap-sm"}>
+                <a className={"button bg-primary"} href="#">Get started</a>
+                <a className={"button bg-secondary"} href="#">Features</a>
+                <a className={"button bg-secondary"} href="#">Why Unitary</a>
+                <a className={"button bg-secondary"} href="#">Github</a>
               </div>
+
             </div>
           </div>
         </section>
