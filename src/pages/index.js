@@ -36,8 +36,6 @@ function HomepageHeader() {
           </article>
         </div>
       </div>
-
-
       <SearchModal isOpen={open} onClose={() => setOpen(false)}/>
     </>
   );
@@ -52,117 +50,62 @@ export default function Home() {
       <HomepageHeader/>
       <main>
 
-        <section className={"container box-text"}>
-          <div className={"row"}>
-            <div className={"col col--6 md:p-0 flex align-items-center bg-code-block overflow-auto"}>
-              <img src="img/index/unitary-cli-showcase-passed.png" alt="Unitary shield"/>
+        <div className={"article pt-0 pb-40"}>
+          <article className={"container box-text"}>
+            <div className={"row"}>
+              <figure className={"col col--6 md:p-0 flex align-items-center overflow-auto"}>
+                <img src="img/index/unitary-cli-showcase-passed.png" alt="Unitary shield"/>
+              </figure>
+              <section className={"col col--6"}>
+                <h2 className={"headline-3"}>User-friendly CLI</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque  mattis rhoncus euismod. Vivamus faucibus dictum neque at faucibus.  Integer egestas pellentesque ligula, et tristique nisl ultricies at.  Vestibulum scelerisque venenatis mi id auctor. Nulla facilisi.  Vestibulum ante ipsum primis in.</p>
+              </section>
             </div>
-            <div className={"col col--6"}>
-              <h2 className={"headline-3"}>User-friendly CLI</h2>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque  mattis rhoncus euismod. Vivamus faucibus dictum neque at faucibus.  Integer egestas pellentesque ligula, et tristique nisl ultricies at.  Vestibulum scelerisque venenatis mi id auctor. Nulla facilisi.  Vestibulum ante ipsum primis in.</p>
+          </article>
+
+          <article className={"container box-text"}>
+            <div className={"row reverse"}>
+              <figure className={"col col--6 md:p-0 flex align-items-center overflow-auto"}>
+                <img src="img/index/unitary-cli-showcase-failed.png" alt="Unitary shield"/>
+              </figure>
+              <section className={"col col--6"}>
+                <h2 className={"headline-3"}>User-friendly CLI</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque  mattis rhoncus euismod. Vivamus faucibus dictum neque at faucibus.  Integer egestas pellentesque ligula, et tristique nisl ultricies at.  Vestibulum scelerisque venenatis mi id auctor. Nulla facilisi.  Vestibulum ante ipsum primis in.</p>
+              </section>
             </div>
+          </article>
+
+        </div>
+
+        <article className={"article bg-surface"}>
+          <div className={"wrapper w-base"}>
+            <h2 className={"headline-2 mb-30"}>Top features</h2>
+            <ul className={"columns-3 custom md:columns-2 sm:columns-2"}>
+              <li>Validation-first engine</li>
+              <li>Deterministic sequential execution</li>
+              <li>Zero boilerplate setup</li>
+              <li>Built-in mock engine</li>
+              <li>Per-group strict-halt assertions</li>
+              <li>Colorized, structured CLI output</li>
+              <li>Configurable test paths</li>
+              <li>Works with any PHP project</li>
+              <li>Input-bound validations</li>
+              <li>Built-in Dependency & Supply-Chain Inspector</li>
+              <li>Clean, minimal DSL</li>
+              <li>Fast execution with low overhead</li>
+              <li>Optional descriptions</li>
+              <li>Detailed failure messages</li>
+              <li>Central config file support</li>
+              <li>Full Test Isolation</li>
+              <li>Built-in Vulnerability Scanner</li>
+              <li>Human-readable errors with input visibility</li>
+              <li>Automatic test discovery</li>
+              <li>Run individual files or directories</li>
+              <li>JUnit XML output</li>
+              <li>Debug mode</li>
+            </ul>
           </div>
-        </section>
-
-        <section className={"container box-text"}>
-          <div className={"row reverse"}>
-            <div className={"col col--6 md:p-0 flex align-items-center bg-code-block overflow-auto"}>
-              <img src="img/index/unitary-cli-showcase-passed.png" alt="Unitary shield"/>
-            </div>
-            <div className={"col col--6"}>
-              <h2 className={"headline-3"}>User-friendly CLI</h2>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque  mattis rhoncus euismod. Vivamus faucibus dictum neque at faucibus.  Integer egestas pellentesque ligula, et tristique nisl ultricies at.  Vestibulum scelerisque venenatis mi id auctor. Nulla facilisi.  Vestibulum ante ipsum primis in.</p>
-            </div>
-          </div>
-        </section>
-        <section className={"container box-text"}>
-          <div className={"row reverse"}>
-            <div className={"col col--6 flex align-items-center bg-code-block overflow-auto"}>
-              <CodeBlock language="php">
-                {`group("About API page", function(TestCase $case) {
-
-    $response = $this->get("/about");
-
-    // Validate that the request was successful
-    $case->validate($response->getStatusCode(), function(Expect $expect) {
-         $expect->isHttpSuccess();
-     });
-
-    // Validate that the response returns valid JSON
-    $case->validate($response->getBody()->getContents(), function(Expect $expect) {
-         $expect->isJson();
-         $expect->hasJsonValueAt("data.slug", "about");
-         
-    })->describe("Check json response");
-});
-
-`}
-              </CodeBlock>
-            </div>
-            <div className={"col col--6"}>
-              <Heading as="h2">Validation-First Testing</Heading>
-              <p>Unitary is a modern PHP testing framework that reimagines what unit testing can be — simple, intuitive, and enjoyable. It feels natural and obvious, giving you powerful validation tools without forcing you to over-describe or over-structure your tests. With over 100 built-in validations, the ability to mix unit and integration-style testing, and built-in mocking capabilities, Unitary lets you test real-world behavior, from isolated logic to complex interactions and all within one consistent framework.</p>
-              <a className={"button bg-primary"} href={"/Unitary/docs/getting-started"}>Get started</a>
-            </div>
-          </div>
-        </section>
-        <section className={"container box-text"}>
-          <div className={"row"}>
-            <div className={"col col--6 flex align-items-center bg-code-block overflow-auto"}>
-              <CodeBlock language="php">
-                {`group("Example API Request", function(TestCase $case) {
-                  
-  $case->describe("Equal check")
-       ->assert(1 === 2, "Strict equal check failed");
-});
-`}
-              </CodeBlock>
-            </div>
-            <div className={"col col--6"}>
-              <Heading as="h2">Custom validation</Heading>
-              <p>
-                You do not need to rely on the built-in validation methods. With Unitary, you can create your own
-                custom validation or methods and use them in your tests very easily.
-                Assert are not just a simple way to validate data but Unitary actually also handles them so that
-                if test fails it will show you what have failed so assert is recommended to use on custom validations.
-              </p>
-              <a className={"button bg-primary"} href={"/Unitary/docs/unit-testing#assertions"}>Read more</a>
-            </div>
-          </div>
-        </section>
-        <section className={"container box-text"}>
-          <div className={"row reverse"}>
-            <div className={"col col--6 flex align-items-center bg-code-block overflow-auto"}>
-              <CodeBlock language="php">
-                {`group("Mocking is now fun", function(TestCase $case) {
-
-    // Mocked!
-    $stream = $case->mock(Stream::class);
-    
-    // Works! (Passed a valid mocked instance of Stream)
-    $response = new Response($stream);
-    $content = $response->getBody()->getContents();    
-
-    $case->validate($content, function(Expect $valid) {
-        $valid->hasResponse();
-    });
-});
-`}
-              </CodeBlock>
-            </div>
-            <div className={"col col--6"}>
-              <Heading as="h2">Mocking is Purely Magical</Heading>
-              <p><strong>Mocking should never feel like a necessary evil. With Unitary, it doesn’t.
-                It feels like a superpower.</strong></p>
-              <p>
-                Mocking in PHP has never felt this smooth. With Unitary, you can mock classes in a single line, control
-                methods with fluent syntax, and get intelligent defaults that just work. No boilerplate. No config hell.
-                Just clean, expressive, powerful testing that makes you wonder how you ever did it the old way.
-              </p>
-              <a className={"button bg-primary"} href={"/Unitary/docs/Mocker/mocker-intro"}>Read more</a>
-            </div>
-          </div>
-        </section>
+        </article>
       </main>
     </Layout>
   );

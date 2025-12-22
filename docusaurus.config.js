@@ -44,7 +44,6 @@ const config = {
     defaultLocale: 'en',
     locales: ['en'],
   },
-
   presets: [
     [
       'classic',
@@ -87,14 +86,14 @@ const config = {
       colorMode: {
         defaultMode: 'dark', // Set dark mode as default
         disableSwitch: true, // Allow users to switch themes (set true to disable)
-        respectPrefersColorScheme: true, // Ignore user's OS/browser preference
+        respectPrefersColorScheme: false, // Ignore user's OS/browser preference
       },
       // Replace with your project's social card
       image: 'img/validate-social-card.png',
       navbar: {
         title: 'PHP Unitary',
         logo: {
-          alt: 'MaplePHP)',
+          alt: 'Unitary',
           src: 'img/logo.svg',
         },
         items: [
@@ -121,7 +120,7 @@ const config = {
         ],
       },
       footer: {
-        style: 'dark',
+        style: 'light',
         links: [
           {
             title: 'Docs',
@@ -173,6 +172,7 @@ const config = {
         additionalLanguages: ['php'],
         theme: prismThemes.github,
         darkTheme: prismThemes.jettwaveDark,
+        //dracula, jettwaveDark
       },
     }),
 };

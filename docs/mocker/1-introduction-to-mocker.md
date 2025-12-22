@@ -20,7 +20,7 @@ group("Mocking example", function(TestCase $case) {
 ```
 
 
-Every method expectation is expressive: call counts, parameter types, return values, exceptions, even dynamic logic based on arguments and all handled with consistent syntax designed to mirror how you think about behavior.  You can keep original methods. You can throw once, then return. You can match by argument. You can validate return types. And you do it without breaking flow.
+> **Every method expectation is expressive:** call counts, parameter types, return values, exceptions, even dynamic logic based on arguments and all handled with consistent syntax designed to mirror how you think about behavior.  You can keep original methods. You can throw once, then return. You can match by argument. You can validate return types. And you do it without breaking flow.
 
 That’s what makes Unitary’s mocking different. It was designed to belong in your test, not beside it.
 
