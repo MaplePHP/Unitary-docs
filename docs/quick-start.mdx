@@ -70,19 +70,16 @@ tests/unitary-user.php
 #### Example test
 
 ```php
-use MaplePHP\Unitary\{Unit, TestCase, TestConfig, Expect};
-
-$unit = new Unit();
+use MaplePHP\Unitary\{Expect,TestCase};
 
 group("Your grouped test subject", function (TestCase $case) {
 
-    $case->validate("Your test value", function(Expect $expect) {
-    
-        $expect->isString();
-        $expect->length(1, 200);
-         
-    });
-    
+    $json = '{"response":{"status":200,"message":"ok"}}';
+
+    $case->expect($json)
+         ->isJson()
+         ->hasJsonValueAt("response.status", 200)
+         ->validate();
 });
 ```
 

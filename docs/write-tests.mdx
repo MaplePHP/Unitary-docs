@@ -14,7 +14,7 @@ A unitary test file can include one or more `group()`, each serving as a contain
 
 
 ```php
-use MaplePHP\Unitary\{TestCase};
+use MaplePHP\Unitary\{Expect,TestCase};
 
 group("HTTP Request", function(TestCase $case) {
 
@@ -47,6 +47,8 @@ php vendor/bin/unitary
 Descriptions are optional and useful when the purpose of a validation isn’t immediately obvious.
 
 ```php
+use MaplePHP\Unitary\{Expect,TestCase};
+
 group("Validating API Response", function(TestCase $case) {
 
     $json = '{"response":{"status":200,"message":"ok"}}';
@@ -59,8 +61,8 @@ group("Validating API Response", function(TestCase $case) {
         ->validate("API response status");
 });
 ```
-* `validate()`: You can define a custom heading for the validation.
-* `describe()`: Add optional notes to explain the validation and may be chained multiple times when additional clarity is needed.
+* `describe()`: Add optional description to explain the validation and chain them when more clarity is needed.
+* `validate()`: You can define a optional **heading** for the validation.
 
 #### Response
 
@@ -75,6 +77,8 @@ Validations below it will not run, which is helpful when later checks depend on 
 
 
 ```php
+use MaplePHP\Unitary\{Expect,TestCase};
+
 group("Validating API Response", function(TestCase $case) {
 
     $json = '{"response":{"status":200,"message":"ok"}}';
@@ -97,6 +101,8 @@ _Use hard stops when later checks depend entirely on earlier guarantees._
 Unitary is built to make testing feel natural. That means you can debug with normal `print_r()`, `var_dump()`, or `echo` and Unitary will capture and display the output neatly in the CLI.
 
 ```php
+use MaplePHP\Unitary\{Expect,TestCase};
+
 group("Debug example", function(TestCase $case) {
     print_r(['milk', 'cheese', 'bread']);
 });
@@ -114,6 +120,8 @@ group("Debug example", function(TestCase $case) {
 ## Advanced usage
 Use the callback-based validation when a validation needs staged or conditional logic. It supports **soft stops**, which end only the current validation block. This is ideal for dependent checks or logic that should run only after earlier conditions succeed.
 ```php
+use MaplePHP\Unitary\{Expect,TestCase};
+
 group("1. Soft stop examples", function(TestCase $case) {
 
     $json = '{"response":{"status":200,"message":"ok"}}';
@@ -133,6 +141,7 @@ group("1. Soft stop examples", function(TestCase $case) {
 #### Example with branching:
 
 ```php
+use MaplePHP\Unitary\{Expect,TestCase};
 
 group("2. Soft stop examples", function(TestCase $case) {
   $case->validate($userData, function(Expect $expect) {
@@ -161,6 +170,8 @@ When a test needs logic that isn’t covered by Unitary’s built-in expectation
 A native `assert()` inside a **group** creates a hard stop, while an `assert()` inside a **validation callback** becomes a soft stop and the validation is still counted.
 
 ```php
+use MaplePHP\Unitary\{Expect,TestCase};
+
 group("Preconditions", function(TestCase $case) {
 
     // Hard stop: group ends immediately if this fails

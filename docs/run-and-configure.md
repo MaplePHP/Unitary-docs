@@ -13,18 +13,76 @@ This chapter covers everything that happens when a test suite is executed — ho
 
 ---
 
+## Running tests (CLI)
 
-## Show a single group
+The Unitary CLI is the fastest way to execute and inspect tests.
+When launched without arguments, it automatically discovers all test groups in your project and runs them:
 
 ```bash
-php vendor/bin/unitary --show=448b06d9127fbca608168e769acd3c7c1
+php vendor/bin/unitary
+```
+<p class="offset-top"><small>_Same as `php vendor/bin/unitary run` or `php vendor/bin/unitary test`_</small></p>
+
+For help and a full list of available flags:
+
+```bash
+php vendor/bin/unitary --help
 ```
 
-#### Response
+Create a boilerplate test file to get started quickly:
+
+```bash
+php vendor/bin/unitary template
+```
+
+Limit output to only failing validations:
+
+```bash
+php vendor/bin/unitary --errors-only
+```
+
+You can also rerun a specific test by **hash**:
+
+```bash
+php vendor/bin/unitary --show=b0620ca8ef6ea7598e5ed56a530b1983
+```
+
+##### Response
 
 ![Unitary CLI response](https://wazabii.se/github-assets/unitary/unitary-cli-show.png)
 
+
+You can also rerun a specific test by a specified **name**:
+```bash
+php vendor/bin/unitary --show=unitary
+```
+
+##### Response
+
+![Unitary CLI response](https://wazabii.se/github-assets/unitary/unitary-cli-state-grouped.png)
+
+> Se [Configure test groups](#configure-test-groups) for more information on how this actually works below.
+
 ---
+
+### Targeting specific tests
+
+Unitary is extremely fast and can execute more tests than you could ever write in under a second. You’ll rarely use `--path`, `--exclude`, or `--smart-search` for performance reasons — they’re mainly for convenience, such as IDE integrations or when you want to limit discovery to specific folders. 
+
+During active development, the `--show` flag is often the more practical choice. It lets you target individual tests by name or hash while still surfacing fatal errors from unrelated test files, errors that would otherwise remain hidden if discovery were narrowly filtered.
+
+
+```bash
+php vendor/bin/unitary --path="tests/integration"
+php vendor/bin/unitary --exclude="tests/legacy/*"
+php vendor/bin/unitary --smart-search
+```
+
+These flags are ideal for quick, local runs.
+If you want the same behavior every time, define it in your configuration file instead.
+
+---
+
 
 ## Configure test groups
 Every individual groups can define their own configuration using TestConfig. This allows naming, skipping, or scoping tests directly in code without affecting the rest of the suite.
@@ -51,61 +109,6 @@ php vendor/bin/unitary --show=unitary
 #### Response
 
 ![Unitary CLI response](https://wazabii.se/github-assets/unitary/unitary-cli-state-grouped.png)
-
----
-
-## Running tests (CLI)
-
-The Unitary CLI is the fastest way to execute and inspect tests.
-When launched without arguments, it automatically discovers all test groups in your project and runs them:
-
-```bash
-php vendor/bin/unitary
-```
-<p><small>_Same as `php vendor/bin/unitary run`_</small></p>
-
-For help and a full list of available flags:
-
-```bash
-php vendor/bin/unitary --help
-```
-
-Create a boilerplate test file to get started quickly:
-
-```bash
-php vendor/bin/unitary template
-```
-
-Limit output to only failing validations:
-
-```bash
-php vendor/bin/unitary --errors-only
-```
-
-You can also rerun a specific test by **hash** or by the name:
-
-```bash
-php vendor/bin/unitary --show=b0620ca8ef6ea7598e5ed56a530b1983
-php vendor/bin/unitary --show=checkout
-```
-
-Hashes appear after each run. Using `withName()` gives a readable and permanent reference for a test group.
-
----
-
-## Targeting specific tests
-
-Unitary is extremely fast and can execute more tests than you could ever write in under a second. You’ll rarely use `--path`, `--exclude`, or `--smart-search` for performance reasons — they’re mainly for convenience, such as IDE integrations or when you want to limit discovery to specific folders. During active development, the `--show` flag is often more practical for targeting individual tests by name or hash.
-
-
-```bash
-php vendor/bin/unitary --path="tests/integration"
-php vendor/bin/unitary --exclude="tests/legacy/*"
-php vendor/bin/unitary --smart-search
-```
-
-These flags are ideal for quick, local runs.
-If you want the same behavior every time, define it in your configuration file instead.
 
 ---
 

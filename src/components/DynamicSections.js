@@ -15,8 +15,8 @@ export default function DynamicSections({sections}) {
     <>
       {argData.map((row) => (
         <div key={row.name} className="pre w-1/2">
-          <h4 className="mb-0">{row.name}</h4>
-          <p className="mb-0">{row.description}</p>
+          <h2 className="mb-0 headline-5">{row.name}</h2>
+          <p className="mb-0 text-sm">{row.description}</p>
         </div>
       ))}
     </>
@@ -57,15 +57,15 @@ export default function DynamicSections({sections}) {
       </nav>
 
       {sortedSections.map((section) => (
-        <div className={"item"} key={section.title} id={section.title.toLowerCase().replace(/\s+/g, "-")}>
+        <div className={"item pb-20 border-bottom"} key={section.title} id={section.title.toLowerCase().replace(/\s+/g, "-")}>
           <section className="mb-1">
-            <h2>{section.title}</h2>
+            <h2 className={"headline-3"}>{section.title}</h2>
             <ReactMarkdown>{section.description}</ReactMarkdown>
           </section>
           {(section?.args && section.args.length > 0) && (
             <>
               <aside className="mb-1">
-                <h3>Parameters</h3>
+                <h3 className={"headline-5"}>Parameters</h3>
                 <div className="flex flex-wrap column-gap">
                   <ArgumentComponent argData={section.args}></ArgumentComponent>
                 </div>
@@ -73,12 +73,13 @@ export default function DynamicSections({sections}) {
             </>
           )}
           <aside className="mb-1">
-            <h3>Example</h3>
+            <h3 className={"headline-5"}>Example</h3>
             <CodeBlock language="php">{`${Test(section)}`}</CodeBlock>
           </aside>
         </div>
       ))}
     </div>
+
 
   );
 }

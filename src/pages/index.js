@@ -58,7 +58,7 @@ export default function Home() {
               </figure>
               <section className={"col col--6"}>
                 <h2 className={"headline-3"}>User-friendly CLI</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque  mattis rhoncus euismod. Vivamus faucibus dictum neque at faucibus.  Integer egestas pellentesque ligula, et tristique nisl ultricies at.  Vestibulum scelerisque venenatis mi id auctor. Nulla facilisi.  Vestibulum ante ipsum primis in.</p>
+                <p className={"text-lg"}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque  mattis rhoncus euismod. Vivamus faucibus dictum neque at faucibus.  Integer egestas pellentesque ligula, et tristique nisl ultricies at.  Vestibulum scelerisque venenatis mi id auctor. Nulla facilisi.  Vestibulum ante ipsum primis in.</p>
               </section>
             </div>
           </article>
@@ -84,6 +84,7 @@ export default function Home() {
               <li>Validation-first engine</li>
               <li>Deterministic sequential execution</li>
               <li>Zero boilerplate setup</li>
+              <li>lightning-fast</li>
               <li>Built-in mock engine</li>
               <li>Per-group strict-halt assertions</li>
               <li>Colorized, structured CLI output</li>
