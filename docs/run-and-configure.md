@@ -33,7 +33,7 @@ Every individual groups can define their own configuration using TestConfig. Thi
 ```php
 $config = TestConfig::make()->withName("unitary")->withSkip();
 
-group($config->withSubject("Example API Request"), function(TestCase $case) {
+group($config->withSubject("HTTP Request"), function(TestCase $case) {
 
 });
 

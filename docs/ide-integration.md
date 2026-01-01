@@ -20,10 +20,10 @@ Follow these steps to configure PhpStorm for running Unitary tests directly from
 
 3. Under the **Configuration** section:
 
-    * **File:** set this to
+    * **File:** set this to the **absolute** path to the unitary binary file!
 
       ```
-      vendor/bin/unitary
+      /your/absolute/project/path/vendor/bin/unitary
       ```
     * **Arguments:** set this to
 
@@ -48,7 +48,7 @@ This means you don’t need to manually specify test directories — ideal for r
 ---
 
 ## Tips
-
-* You can create **multiple configurations** for different test paths or options (e.g., `--errors-only` or `--fail-fast`).
+* Above implementation is just a recommendation but you can create your own implementation that works for your project.
+* You can create **multiple configurations** for different test paths (`--path`) or options (e.g., `--errors-only` or `--fail-fast`).
 * Use **Run › Run with Coverage** if you want to see Unitary’s coverage report directly in the IDE (with Xdebug enabled).
 * For quicker access, assign a **custom keyboard shortcut** to your Unitary configuration under *Preferences › Keymap › Run Configurations*.

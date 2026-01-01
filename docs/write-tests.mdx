@@ -16,7 +16,7 @@ A unitary test file can include one or more `group()`, each serving as a contain
 ```php
 use MaplePHP\Unitary\{TestCase};
 
-group("Example API Request", function(TestCase $case) {
+group("HTTP Request", function(TestCase $case) {
 
     $request = new Request("GET", "https://example.com/?id=1&slug=hello");
 
@@ -47,15 +47,16 @@ php vendor/bin/unitary
 Descriptions are optional and useful when the purpose of a validation isn’t immediately obvious.
 
 ```php
-group("Example API Response", function(TestCase $case) {
+group("Validating API Response", function(TestCase $case) {
 
     $json = '{"response":{"status":200,"message":"ok"}}';
 
     $case->expect($json)
         ->isJson()
+        ->describe("Response must be valid JSON")
         ->hasJsonValueAt("response.status", 404)
-        ->describe("Expected JSON structure did not match")
-        ->validate("Checking API response code");
+        ->describe("Response status must be 200")
+        ->validate("API response status");
 });
 ```
 * `validate()`: You can define a custom heading for the validation.
@@ -74,12 +75,14 @@ Validations below it will not run, which is helpful when later checks depend on 
 
 
 ```php
-group("Example API Response", function(TestCase $case) {
+group("Validating API Response", function(TestCase $case) {
 
-    $case->expect('{"response":{"status":200}}')
+    $json = '{"response":{"status":200,"message":"ok"}}';
+
+    $case->expect($json)
         ->isJson()
-        ->hasJsonValueAt("response.status", 200)
-        ->assert("Invalid JSON structure");
+        ->hasJsonValueAt("response.status", 404)
+        ->assert("API response status");
 });
 ```
 _Use hard stops when later checks depend entirely on earlier guarantees._

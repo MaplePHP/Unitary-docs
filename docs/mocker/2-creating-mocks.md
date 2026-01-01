@@ -25,9 +25,9 @@ group("Mocking a PSR-7 Stream", function(TestCase $case) {
 ```
 _This is actually all you need to do to mock a class._
 
-## Method Behavior
+## Validate Method Behaviors
 
-You can configure some method behaviors in Unitary mocker. This is done via a `MethodRegistry` callback passed as the second argument to `mock()`.
+You can configure and validate some method behaviors in Unitary mocker. This is done via a `MethodRegistry` callback passed as the second argument to `mock()`.
 
 This is similar to exposing the mocked class, giving you full control to define expectations and behaviors for specific methods within it.
 
@@ -53,6 +53,14 @@ group("Testing a User Registration Service", function(TestCase $case) {
     });
 });
 ```
+
+#### Sample Error Output
+
+When a mock expectation fails, Unitary shows a detailed, test-aware error message:
+
+![Unitary CLI response](https://wazabii.se/github-assets/unitary/unitary-cli-mock-fail.png)
+
+---
 
 ## Features Overview
 
@@ -98,14 +106,6 @@ group("Testing a User Registration Service", function(TestCase $case) {
 | `hasFileName(name)`           | Ensures the method is defined in the given file name                     |
 | `startLine(n)`                | Checks if the method starts on the specified line number                 |
 | `endLine(n)`                  | Checks if the method ends on the specified line number                   |
-
----
-
-## Sample Error Output
-
-When a mock expectation fails, Unitary shows a detailed, test-aware error message:
-
-![Unitary CLI response](https://wazabii.se/github-assets/unitary/unitary-cli-mock-fail.png)
 
 ---
 
