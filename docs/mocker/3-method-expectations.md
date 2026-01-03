@@ -40,28 +40,41 @@ On the first call, it returns `1001`; on the second, `1002`; on the third, `1003
 
 ---
 
-## Return Values Based on Arguments (`wrap()`)
+## Keeping original behavior
 
-If you need the method to respond dynamically — or reuse real internal logic — use `wrap()`.
+Use `keepOriginal()` when a mocked method should run **unchanged**.
 
 ```php
-$someClass = $case->mock(SomeClass::class, function (MethodRegistry $method) {
-    $method->method('calculate')->wrap(function ($a, $b) {
-        return $a + $b;
-    });
+$method->method('getFromEmail')->keepOriginal();
+```
+
+The method executes exactly as it does on the real class. No interception, no modification, no simulation.
+
+This is useful when a mock only needs control over specific methods and the remaining behavior should stay real. It allows a mocked instance to participate in an integration-oriented test without replacing logic that is not relevant to the validation.
+
+`keepOriginal()` makes the intent explicit: the method exists on the mock, but its behavior is untouched.
+
+---
+
+## Wrapping behavior
+
+Use `wrap()` when a method should run **custom test logic while still operating on the real class instance**.
+
+```php
+$method->method('sendEmail')->wrap(function (string $email) {
+    if (!$this->isValidEmail($email)) {
+        return 'FAILED';
+    }
+
+    return "email:{$email}";
 });
 ```
 
-The closure replaces the method body and receives the arguments passed to it.
-You're also **executing inside the mocked class**, so you have full access to `$this`:
+The wrapped method executes with `$this` bound to the original class instance. This allows the wrapper to call real helper methods, rely on internal state, and reuse existing validation logic.
 
-```php
-$method->method('buildMessage')->wrap(function () {
-    return $this->template('hello', ['name' => 'Daniel']);
-});
-```
+Wrapping neither replaces the method nor leaves it untouched. It modifies execution at a specific point while keeping the surrounding behavior real.
 
-This gives you complete control while still staying inside the mock.
+Use wrapping when you need control without losing access to the original implementation.
 
 ---
 

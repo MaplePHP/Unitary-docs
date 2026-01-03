@@ -63,9 +63,8 @@ php vendor/bin/unitary --show=unitary
 
 > Se [Configure test groups](#configure-test-groups) for more information on how this actually works below.
 
----
 
-### Targeting specific tests
+<h2 class="headline-5">Targeting specific tests</h2>
 
 Unitary is extremely fast and can execute more tests than you could ever write in under a second. You’ll rarely use `--path`, `--exclude`, or `--smart-search` for performance reasons — they’re mainly for convenience, such as IDE integrations or when you want to limit discovery to specific folders. 
 
