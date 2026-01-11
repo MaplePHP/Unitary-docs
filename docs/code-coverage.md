@@ -1,5 +1,5 @@
 ---
-sidebar_position: 8
+sidebar_position: 11
 ---
 
 # Code Coverage
@@ -19,16 +19,11 @@ To generate coverage results, run the following command:
 php vendor/bin/unitary coverage
 ```
 
-Example output:
+##### Example output:
+![Unitary CLI response](https://wazabii.se/github-assets/unitary/unitary-cli-code-coverage-output.png)
 
-```
-Code coverage:
-Total lines:               6828
-Executed lines:            2959
-Code coverage percent:     43.34%
-```
 
-This output summarizes:
+##### This output summarizes:
 
 * **Total lines** — the total number of executable lines in your project.
 * **Executed lines** — how many of those lines were run during your tests.

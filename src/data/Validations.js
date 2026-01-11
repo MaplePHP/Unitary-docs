@@ -140,6 +140,62 @@ true
     `,
   },
   {
+    title: "hasValueAt",
+    description:
+      "Traverses an array or object using a dot-notated key path and validates that the value at the specified path is strictly equal (`===`) to the expected value. Supports deep access into nested structures (e.g., `user.firstname`) and works with both arrays and objects.",
+    tags: ["object", "array", "nested", "dot notation", "strict", "key path", "equality"],
+    args: [
+      {
+        type: "string|int|float",
+        name: "$key",
+        required: true,
+        description: "The key or dot-notated path pointing to the nested value to be validated.",
+      },
+      {
+        type: "mixed",
+        name: "$needle",
+        required: true,
+        description: "The expected value to strictly match against at the given key path.",
+      }
+    ],
+    code: `
+$data = ['user' => ['firstname' => 'Alice']];
+$isValid = Inp::value($data)->hasValueAt('user.firstname', 'Alice');
+var_dump($isValid);
+`,
+    result: `
+true
+    `,
+  },
+  {
+    title: "hasJsonValueAt",
+    description:
+      "Traverses an array or object using a dot-notated key path and validates that the value at the specified path is strictly equal (`===`) to the expected value. Supports deep access into nested structures (e.g., `user.firstname`) and works with both arrays and objects.",
+    tags: ["object", "array", "nested", "dot notation", "strict", "key path", "equality"],
+    args: [
+      {
+        type: "string|int|float",
+        name: "$key",
+        required: true,
+        description: "The key or dot-notated path pointing to the nested value to be validated.",
+      },
+      {
+        type: "mixed",
+        name: "$needle",
+        required: true,
+        description: "The expected value to strictly match against at the given key path.",
+      }
+    ],
+    code: `
+$data = ['user' => ['firstname' => 'Alice']];
+$isValid = Inp::value($data)->hasValueAt('user.firstname', 'Alice');
+var_dump($isValid);
+`,
+    result: `
+true
+    `,
+  },
+  {
     title: "keyExists",
     description:
       "Checks if a specified key exists in the array. This validation first ensures the value is an array, then uses `array_key_exists()` to verify the presence of the given key.",
@@ -336,7 +392,7 @@ true
       }
     ],
     code: `
-$isValid = Validator::value("Unitary is great")->contains("great");
+$isValid = Validator::value("Laravel is great")->contains("great");
 var_dump($isValid);
 `,
     result: `
@@ -993,6 +1049,31 @@ var_dump($isValid);
     result: `
 true
     `,
+  },
+  {
+    title: "isClass",
+    description:
+      "Validates that the given value is exactly an instance of the specified class, or a matching class name string. This is a strict comparison and does not allow inheritance or interface checks—only exact class matches are accepted.",
+    tags: ["class", "type", "instance", "object", "isClass", "validation"],
+    args: [
+      {
+        type: "string",
+        name: "$instance",
+        required: true,
+        description:
+          "The fully qualified class name to compare against. Must match exactly with the object's class or the class name string.",
+      }
+    ],
+    code: `
+use MyApp\\User;
+
+$user = new User();
+$isValid = Inp::value($user)->isClass(User::class);
+var_dump($isValid);
+`,
+    result: `
+true
+    `
   },
   {
     title: "isLessThan",

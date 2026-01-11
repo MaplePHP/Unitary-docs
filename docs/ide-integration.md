@@ -1,8 +1,9 @@
 ---
-sidebar_position: 6
+sidebar_position: 10
 ---
 
 # IDE Integration
+![Unitary CLI response](https://wazabii.se/github-assets/unitary/unitary-ide-showcase.png)
 
 Unitary integrates seamlessly with modern IDEs through its smart test discovery system.
 In **PhpStorm**, you can run tests directly from the editor. Unitary automatically detects and executes the most relevant tests based on the file you're working on.
@@ -47,8 +48,8 @@ This means you don’t need to manually specify test directories — ideal for r
 
 ---
 
-## Tips
-* Above implementation is just a recommendation but you can create your own implementation that works for your project.
+## Important Tips!
+* The above implementation is just a **recommendation**, you can create your own implementation that works for your project.
 * You can create **multiple configurations** for different test paths (`--path`) or options (e.g., `--discover-pattern`, `--errors-only` or `--fail-fast`).
 * Use **Run › Run with Coverage** if you want to see Unitary’s coverage report directly in the IDE (with Xdebug enabled).
 * For quicker access, assign a **custom keyboard shortcut** to your Unitary configuration under *Preferences › Keymap › Run Configurations*.

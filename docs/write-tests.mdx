@@ -5,7 +5,7 @@ sidebar_position: 2
 
 # Write Tests
 
-Unitary follows a validation-first model: every test begins with an input and a set of expectations. Groups define the subject under test, and each validation describes one of its responsibilities with clear intent.
+Groups define the subject for the test, test begins with an input and a set of expectations and each validation describes one of its responsibilities with clear intent.
 
 ---
 
@@ -51,12 +51,12 @@ use MaplePHP\Unitary\{Expect,TestCase};
 
 group("Validating API Response", function(TestCase $case) {
 
-    $json = '{"response":{"status":200,"message":"ok"}}';
+    $json = '{"response":{"status":404,"message":"ok"}}';
 
     $case->expect($json)
         ->isJson()
         ->describe("Response must be valid JSON")
-        ->hasJsonValueAt("response.status", 404)
+        ->hasJsonValueAt("response.status", 200)
         ->describe("Response status must be 200")
         ->validate("API response status");
 });
@@ -66,14 +66,15 @@ group("Validating API Response", function(TestCase $case) {
 
 #### Response
 
-![Unitary CLI response](https://wazabii.se/github-assets/unitary/unitary-cli-assert-fail.png)
+![Unitary CLI response](https://wazabii.se/github-assets/unitary/unitary-cli-description.png)
 
 ---
 
 ## Hard stops
-You may chain `assert()` as the final step, replaces `validate()` to trigger a **hard stop** in the group.
-Validations below it will not run, which is helpful when later checks depend on earlier conditions or when you want to avoid cascading errors.
 
+A hard stop aborts the current group immediately. No further validations or logic inside that group will run but will continue with the next group in the same test file if it exists.
+
+You may chain `assert()` as the final step, replaces `validate()` to trigger a **hard stop** in the group. Validations below it will not run, which is helpful when later checks depend on earlier conditions or when you want to avoid cascading errors.
 
 
 ```php
@@ -81,19 +82,18 @@ use MaplePHP\Unitary\{Expect,TestCase};
 
 group("Validating API Response", function(TestCase $case) {
 
-    $json = '{"response":{"status":200,"message":"ok"}}';
+    $json = '{"response":{"status":404,"message":"ok"}}';
 
     $case->expect($json)
         ->isJson()
-        ->hasJsonValueAt("response.status", 404)
+        ->hasJsonValueAt("response.status", 200)
         ->assert("API response status");
 });
 ```
-_Use hard stops when later checks depend entirely on earlier guarantees._
 
 #### Response
 
-![Unitary CLI response](https://wazabii.se/github-assets/unitary/unitary-cli-assert-fail.png)
+![Unitary CLI response](https://wazabii.se/github-assets/unitary/unitary-cli-hard-stop.png)
 
 ---
 
@@ -113,35 +113,36 @@ group("Debug example", function(TestCase $case) {
 
 #### Response
 
-![Unitary CLI response](https://wazabii.se/github-assets/unitary/unitary-cli-note.png)
+![Unitary CLI response](https://wazabii.se/github-assets/unitary/unitary-cli-debug-output.png)
 
 ---
 
 ## Advanced usage
-Use the callback-based validation when a validation needs staged or conditional logic. It supports **soft stops**, which end only the current validation block. This is ideal for dependent checks or logic that should run only after earlier conditions succeed.
-```php
-use MaplePHP\Unitary\{Expect,TestCase};
 
-group("1. Soft stop examples", function(TestCase $case) {
+### Callback-based validation
+Use the callback-based validation when a validation needs staged or conditional logic.
+
+```php
+use MaplePHP\Unitary\{TestCase,Expect};
+
+group("Advanced example", function(TestCase $case) {
 
     $json = '{"response":{"status":200,"message":"ok"}}';
 
     $case->validate($json, function(Expect $expect) {
 
         $expect->isJson()
-               ->assert("Invalid JSON"); // soft stop on failure
-
-        $expect->hasJsonValueAt("response.status", 200)
-               ->assert("Unexpected status"); // soft stop on failure
+               ->hasJsonValueAt("response.status", 200);
     });
 
 });
 ```
 
-#### Example with branching:
+### Soft stop
+The callback-based validation also supports **soft stops**, which end only the current validation block. This is ideal for dependent checks or logic that should run only after earlier conditions succeed.
 
 ```php
-use MaplePHP\Unitary\{Expect,TestCase};
+use MaplePHP\Unitary\{TestCase,Expect};
 
 group("2. Soft stop examples", function(TestCase $case) {
   $case->validate($userData, function(Expect $expect) {

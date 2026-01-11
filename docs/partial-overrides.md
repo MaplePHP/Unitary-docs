@@ -1,15 +1,14 @@
 ---
-title: Controlled Execution
+title: Partial Overrides
 sidebar_position: 4
 ---
 
 
-# Controlled Execution
+# Partial Overrides
 
-Controlled execution is used in **integration tests** when you want to run a real class but disable or replace specific side effects.
+Partial Overrides is commonly used in integration tests, when you want to run a real class but disable or replace specific side effects. 
 
-The class executes normally.
-Only the methods you explicitly override behave differently.
+_The class executes normally. Only the methods you explicitly override behave differently._
 
 #### Example: integration test with a disabled side effect
 
@@ -23,7 +22,8 @@ group("Test payment transaction", function (TestCase $case) {
     $service->override('sendRequest', function (array $payload) {
         return [
             'status' => 200,
-            'transactionId' => 'test-id',
+            'transaction_id' => 'tx_test_123',
+            'transaction_status' => 'authorised',
         ];
     });
 
@@ -31,8 +31,9 @@ group("Test payment transaction", function (TestCase $case) {
     $result = $service->processPayment(100);
 
     // Validate the result
-    $case->expect($result['status'])
-        ->isEqualTo('confirmed')
+    $case->expect($result)
+        ->hasValueAt('transaction_status', 'authorised')
+        ->hasValueAt('transaction_id', 'tx_test_123')
         ->validate();
 });
 ```
@@ -86,9 +87,9 @@ $service->this('processPayment', 100);
 
 This simply calls the method on the wrapped instance and respects overrides.
 
-## When to use controlled execution
+## When to use partial overrides
 
-Use controlled execution when:
+Use partial overrides when:
 
 * You are writing **integration tests**
 * You want real behavior, not a fake implementation

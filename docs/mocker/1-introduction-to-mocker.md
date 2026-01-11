@@ -5,7 +5,7 @@ sidebar_position: 1
 
 # Mocking is Purely Magical
 
-Mocking in Unitary is built for real-world testing. It’s fast to write, clear to read, and powerful. Mocking in PHP has never felt this smooth. With Unitary, you can mock classes in a single line, control methods with fluent syntax, and get intelligent defaults that just work. No boilerplate. No config hell. Just clean, expressive and powerful testing.
+Mocking in Unitary is built for real-world testing. It’s fast to write, clear to read, and powerful. Mocking in PHP has never felt this smooth. With Unitary, you can mock classes in a single line, control methods with fluent syntax, and get intelligent defaults that just work.
 
 ```php
 group("Mocking example", function(TestCase $case) {

@@ -1,15 +1,14 @@
 ---
-title: Run & Configure
+title: Run tests
 sidebar_position: 3
 ---
 import ConfigTable from './_includes/config-table.mdx';
 
 
 
-# Run & Configure
+# Run tests
 
-Running tests is the core of working with Unitary.
-This chapter covers everything that happens when a test suite is executed — how Unitary discovers tests, how configuration layers interact, and how you can control execution through the command line, project files, or code-level settings.
+This page describes how to run tests.
 
 ---
 
@@ -44,12 +43,12 @@ php vendor/bin/unitary --errors-only
 You can also rerun a specific test by **hash**:
 
 ```bash
-php vendor/bin/unitary --show=b0620ca8ef6ea7598e5ed56a530b1983
+php vendor/bin/unitary --show=12e65ed93cd2ac5de824254d2c69dc5d0
 ```
 
 ##### Response
 
-![Unitary CLI response](https://wazabii.se/github-assets/unitary/unitary-cli-show.png)
+![Unitary CLI response](https://wazabii.se/github-assets/unitary/unitary-cli-state-pass.png)
 
 
 You can also rerun a specific test by a specified **name**:
@@ -59,7 +58,7 @@ php vendor/bin/unitary --show=unitary
 
 ##### Response
 
-![Unitary CLI response](https://wazabii.se/github-assets/unitary/unitary-cli-state-grouped.png)
+![Unitary CLI response](https://wazabii.se/github-assets/unitary/unitary-cli-named-group.png)
 
 > Se [Configure test groups](#configure-test-groups) for more information on how this actually works below.
 
@@ -108,33 +107,6 @@ php vendor/bin/unitary --show=unitary
 #### Response
 
 ![Unitary CLI response](https://wazabii.se/github-assets/unitary/unitary-cli-state-grouped.png)
-
----
-
-## Configuration file
-
-Unitary automatically loads defaults from either `unitary.config.php` or `unitary.json` located next to your `composer.json`.
-Both formats are equivalent — PHP for flexibility, JSON for portability.
-
-```php
-<?php
-return [
-    'path'              => false,
-    'smart-search'      => false,
-    'errors-only'       => false,
-    'verbose'           => false,
-    'exclude'           => false,
-    'discover-pattern'  => false,
-    'show'              => false,
-    'timezone'          => 'Europe/Stockholm',
-    'locale'            => 'en_US',
-    'always-show-files' => false,
-    'fail-fast'         => false,
-];
-```
-
-Values defined here apply to all runs unless explicitly overridden on the command line.
-When both a file and a CLI flag specify the same setting, **the CLI takes precedence** for that run.
 
 ---
 
