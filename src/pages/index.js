@@ -29,7 +29,7 @@ function HomepageHeader() {
               <a className={"button bg-primary"} href="/Unitary/docs/get-started">Get started</a>
               <a className={"button bg-secondary"} href="#top-features">Features</a>
               <a className={"button bg-secondary"} href="/Unitary/why-unitary">Why Unitary</a>
-              <a className={"button bg-secondary"} href="https://github.com/MaplePHP/Unitary" target={"_blank"}>Github</a>
+              <a className={"button bg-secondary"} href="https://github.com/MaplePHP/unitary" target={"_blank"}>Github</a>
             </div>
           </article>
         </div>
