@@ -2,10 +2,8 @@ import clsx from 'clsx';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import SearchModal from '../components/SearchModal';
-import Heading from '@theme/Heading';
 import styles from './index.module.css';
 import React, {useState} from "react";
-import CodeBlock from "@theme/CodeBlock";
 
 function HomepageHeader() {
   const {siteConfig} = useDocusaurusContext();
@@ -28,10 +26,10 @@ function HomepageHeader() {
               <h2 className={"text-base font-normal text-warning pb-5 mb-0"}>A lightning-fast <strong>PHP testing framework</strong> by MaplePHP</h2>
             </div>
             <div className={"flex flex-wrap gap-sm"}>
-              <a className={"button bg-primary"} href="#">Get started</a>
-              <a className={"button bg-secondary"} href="#">Features</a>
-              <a className={"button bg-secondary"} href="#">Why Unitary</a>
-              <a className={"button bg-secondary"} href="#">Github</a>
+              <a className={"button bg-primary"} href="/Unitary/docs/get-started">Get started</a>
+              <a className={"button bg-secondary"} href="#top-features">Features</a>
+              <a className={"button bg-secondary"} href="/Unitary/why-unitary">Why Unitary</a>
+              <a className={"button bg-secondary"} href="https://github.com/MaplePHP/Unitary" target={"_blank"}>Github</a>
             </div>
           </article>
         </div>
@@ -57,8 +55,8 @@ export default function Home() {
                 <img src="img/index/unitary-cli-showcase-passed.png" alt="Unitary shield"/>
               </figure>
               <section className={"col col--6"}>
-                <h2 className={"headline-3"}>User-friendly CLI</h2>
-                <p className={"text-lg"}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque  mattis rhoncus euismod. Vivamus faucibus dictum neque at faucibus.  Integer egestas pellentesque ligula, et tristique nisl ultricies at.  Vestibulum scelerisque venenatis mi id auctor. Nulla facilisi.  Vestibulum ante ipsum primis in.</p>
+                <h2 className={"headline-3"}>Next-Gen PHP Testing Framework</h2>
+                <p>Unitary is a blazing-fast, developer-first testing framework for PHP, built from the ground up with zero third-party dependencies and a highly optimized core, not just a wrapper around legacy tools. It’s simple to get started, lightning-fast to run, and powerful enough to test everything from units to mocks.</p>
               </section>
             </div>
           </article>
@@ -69,8 +67,8 @@ export default function Home() {
                 <img src="img/index/unitary-cli-showcase-failed.png" alt="Unitary shield"/>
               </figure>
               <section className={"col col--6"}>
-                <h2 className={"headline-3"}>User-friendly CLI</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque  mattis rhoncus euismod. Vivamus faucibus dictum neque at faucibus.  Integer egestas pellentesque ligula, et tristique nisl ultricies at.  Vestibulum scelerisque venenatis mi id auctor. Nulla facilisi.  Vestibulum ante ipsum primis in.</p>
+                <h2 className={"headline-3"}>Developer-Friendly Testing</h2>
+                <p>Unitary is built to be easy to use without ever feeling limited. You can start writing meaningful tests immediately, no setup, no configuration, no hidden rules. Mocking, expectations and controlled execution are built in and work naturally together, so tests stay readable and intentional. Failures produce clear, actionable evidence instead of noise. As your test suite grows, Unitary remains predictable and comfortable to work with, letting you focus on your code instead of the testing framework.</p>
               </section>
             </div>
           </article>
@@ -79,12 +77,13 @@ export default function Home() {
 
         <article className={"article bg-surface"}>
           <div className={"wrapper w-base"}>
-            <h2 className={"headline-2 mb-30"}>Top features</h2>
+            <h2 id={"top-features"} className={"headline-2 mb-30"}>Top features</h2>
             <ul className={"columns-3 custom md:columns-2 sm:columns-2"}>
-              <li>Validation-first engine</li>
+              <li>Evidence-Driven testing</li>
+              <li>Standalone test runner (no legacy dependencies)</li>
               <li>Deterministic sequential execution</li>
               <li>Zero boilerplate setup</li>
-              <li>lightning-fast</li>
+              <li>Lightning-fast execution with low overhead</li>
               <li>Built-in mock engine</li>
               <li>Per-group strict-halt assertions</li>
               <li>Colorized, structured CLI output</li>
@@ -93,10 +92,10 @@ export default function Home() {
               <li>Input-bound validations</li>
               <li>Built-in Dependency & Supply-Chain Inspector</li>
               <li>Clean, minimal DSL</li>
-              <li>Fast execution with low overhead</li>
               <li>Optional descriptions</li>
               <li>Detailed failure messages</li>
               <li>Central config file support</li>
+              <li>Identical execution model for local and CI runs</li>
               <li>Full Test Isolation</li>
               <li>Built-in Vulnerability Scanner</li>
               <li>Human-readable errors with input visibility</li>

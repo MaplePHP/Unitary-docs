@@ -28,7 +28,7 @@ For help and a full list of available flags:
 php vendor/bin/unitary --help
 ```
 
-Create a boilerplate test file to get started quickly:
+Create a boilerplate code to get started quickly:
 
 ```bash
 php vendor/bin/unitary template
@@ -107,6 +107,20 @@ php vendor/bin/unitary --show=unitary
 #### Response
 
 ![Unitary CLI response](https://wazabii.se/github-assets/unitary/unitary-cli-state-grouped.png)
+
+---
+
+## JUnit XML Output (CI-Friendly)
+
+For CI systems and test aggregators, Unitary can emit results as JUnit XML.
+
+##### Run tests with:
+
+```bash
+php vendor/bin/unitary --type=junit
+```
+
+_This switches the output format from human-readable CLI output to machine-readable XML._
 
 ---
 

@@ -8,85 +8,149 @@ sidebar_label: FAQ
 
 # Frequently Asked Questions
 
----
+### What is Unitary?
 
-## How do I install MaplePHP - Unitary?
-
-Install via Composer:
-
-```bash
-composer require maplephp/unitary
-```
+Unitary is a modern PHP testing framework built around **evidence-driven testing**, deterministic execution, and extreme performance.
+It is designed to make tests fast, explicit, and trustworthy without configuration or plugins.
 
 ---
 
-## What’s the difference between `Validator` and `Expect`?
+### Is Unitary based on PHPUnit?
 
-- **`Validator`** is best for quick, single-rule checks. You can also access and Unitary nested values using dot notation. Each method call returns `true` or `false` immediately.
+**No.**
 
-- **`Expect`** is for validating a single value against **multiple rules** in sequence. It's designed for cases where you:
-  - Want to **chain** validations
-  - Need to check if **all rules passed** using `isValid()`
-  - Need to know **which rules failed** using `getFailedValidations()`
-  - Want to **invert rules** easily using the `not` prefix (e.g. `notIsEmail()`)
-
-Use `Validator` when you're validating something simple and direct.  
-Use `Expect` when you need detailed control, error reporting, or logic like "must not be an email."
+Unitary is a standalone framework built from the ground up.
+It does not wrap, extend, or depend on PHPUnit or any other legacy testing tool.
 
 ---
 
-## Can I Unitary values in nested arrays or objects?
+### What does “Evidence-Driven Testing” mean?
 
-Yes. Use dot notation with `Validator`:
+It means tests produce **concrete, inspectable evidence**:
 
-```php
-$validator = new Validator(['user' => ['name' => 'John']]);
-$valid = $validator->eq('user.name')->length(1, 50);
-```
+* The exact input that was tested
+* The validation that failed
+* Why it failed
+* Where it failed
 
-Or use `validateInData()` for dynamic lookups:
-
-```php
-$valid = $validator->validateInData('user.name', 'length', [1, 50]);
-```
+Failures are reported with full context, not abstract assertion messages.
 
 ---
 
-## How do I check if a value is valid?
+### Does Unitary replace assertions?
 
-- With `Validator`, each method returns `true` or `false` directly.
-- With `Expect`, chain your rules and then call:
+**No.** It **reframes how they are used**.
 
-```php
-$chain = new Expect("example@domain.com");
-$chain->isEmail()->endsWith(".com");
+* Validations are used to verify behavior and continue execution
+* Native `assert()` is supported as a **strict halt** when a condition must not be violated
 
-if ($chain->isValid()) {
-    // All checks passed
-}
-```
+This gives you control over when tests should stop and when they should continue collecting evidence.
 
 ---
 
-## Does it support PHP 8 or newer?
+### Can I still write unit tests?
 
-Yes — fully compatible with PHP 8 and newer.
+**Yes.**
 
----
+Unitary supports:
 
-## Is this framework production-ready?
+* Unit tests
+* Integration tests
+* Controlled execution with real classes
+* Mocked and wrapped dependencies
 
-Yes. It has been tested and used in production.  
-Still, Unitary your specific use cases during implementation.
-
----
-
-## Where can I find all available validations?
-
-Check the full [Validation Reference](./docs/validations) for a complete list of supported methods.
+The framework does not force a testing style. It enforces clarity.
 
 ---
 
-## Where do I report bugs or request features?
+### How does mocking work?
 
-Open an issue on [GitHub](https://github.com/maplephp/Unitary/issues).
+Mocking is built in.
+
+**You can:**
+
+* Mock or wrap real classes
+* Override specific methods
+* Keep original behavior where needed
+* Define expectations, return values, and call counts
+
+Mocks are isolated per test group and never leak state.
+
+---
+
+### Is Unitary fast enough for large test suites?
+
+**Yes.**
+
+Unitary routinely executes **100,000+ validations per second** with low memory usage.
+Performance comes from a minimal core and deterministic execution, not concurrency tricks.
+
+---
+
+### Does Unitary support CI?
+
+**Yes.**
+
+Features include:
+
+* JUnit XML output
+* Deterministic execution
+* Stable failure reporting
+* Low memory footprint
+
+CI behavior matches local execution.
+
+---
+
+### Do I need configuration files?
+
+**No.**
+
+Unitary works out of the box:
+
+* Automatic test discovery
+* Sensible defaults
+* Optional central config if needed
+
+Configuration is supported, not required.
+
+---
+
+### Can I run individual tests?
+
+**Yes.**
+
+You can:
+
+* Run specific files or directories
+* Target tests by hash
+* Use debug mode for detailed output
+
+---
+
+### Is Unitary production-safe?
+
+**Yes.**
+
+Unitary:
+
+* Runs tests in full isolation
+* Does not modify application state outside test scope
+* Includes dependency and vulnerability inspection tools
+
+It is safe to use in local development and CI pipelines.
+
+---
+
+### Is Unitary opinionated?
+
+**Yes — deliberately.**
+
+Unitary prioritizes:
+
+* Determinism over magic
+* Evidence over abstraction
+* Speed over compatibility
+* Clarity over flexibility
+
+If those align with how you work, Unitary fits well.

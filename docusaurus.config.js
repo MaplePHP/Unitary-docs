@@ -10,7 +10,7 @@ import {
   gruvboxMaterialDark,
   jettwaveDark,
   nightOwl,
-  themes as prismThemes
+  themes as prismThemes,
 } from 'prism-react-renderer';
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
@@ -19,31 +19,28 @@ import {
 const config = {
   title: 'PHP Unitary',
   tagline: 'For developers who like their data structured and their coffee strong',
-  favicon: 'img/favicon.ico',
+
+  // GitHub Pages project sites should use root-level favicon + baseUrl-aware paths
+  favicon: 'favicon.ico',
 
   // Set the production url of your site here
   url: 'https://maplephp.github.io',
   // Set the /<baseUrl>/ pathname under which your site is served
-  // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/Unitary/',
 
-  // GitHub pages deployment config.
-  // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'MaplePHP', // Usually your GitHub org/user name.
-  projectName: 'Unitary', // Usually your repo name.
+  organizationName: 'MaplePHP',
+  projectName: 'Unitary',
   deploymentBranch: 'gh-pages',
   trailingSlash: false,
 
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
 
-  // Even if you don't use internationalization, you can use this field to set
-  // useful metadata like html lang. For example, if your site is Chinese, you
-  // may want to replace "en" with "zh-Hans".
   i18n: {
     defaultLocale: 'en',
     locales: ['en'],
   },
+
   presets: [
     [
       'classic',
@@ -51,9 +48,6 @@ const config = {
       ({
         docs: {
           sidebarPath: './sidebars.js',
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          //editUrl: 'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
         },
         blog: {
           showReadingTime: true,
@@ -61,10 +55,6 @@ const config = {
             type: ['rss', 'atom'],
             xslt: true,
           },
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          // editUrl: 'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
-          // Useful options to enforce blogging best practices
           onInlineTags: 'warn',
           onInlineAuthors: 'warn',
           onUntruncatedBlogPosts: 'warn',
@@ -80,16 +70,71 @@ const config = {
     ],
   ],
 
+  // Add link tags for icons/manifest (baseUrl-aware for GitHub Pages project sites)
+  headTags: [
+    {
+      tagName: 'link',
+      attributes: {
+        rel: 'apple-touch-icon',
+        sizes: '180x180',
+        href: '/Unitary/apple-touch-icon.png',
+      },
+    },
+    {
+      tagName: 'link',
+      attributes: {
+        rel: 'icon',
+        type: 'image/png',
+        sizes: '32x32',
+        href: '/Unitary/favicon-32x32.png',
+      },
+    },
+    {
+      tagName: 'link',
+      attributes: {
+        rel: 'icon',
+        type: 'image/png',
+        sizes: '16x16',
+        href: '/Unitary/favicon-16x16.png',
+      },
+    },
+    {
+      tagName: 'link',
+      attributes: {
+        rel: 'manifest',
+        href: '/Unitary/site.webmanifest',
+      },
+    },
+
+    // Optional: Safari pinned tab icon
+    // {
+    //   tagName: 'link',
+    //   attributes: {
+    //     rel: 'mask-icon',
+    //     href: '/Unitary/safari-pinned-tab.svg',
+    //     color: '#5bbad5',
+    //   },
+    // },
+  ],
+
   themeConfig:
-    /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
+  /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       colorMode: {
-        defaultMode: 'dark', // Set dark mode as default
-        disableSwitch: true, // Allow users to switch themes (set true to disable)
-        respectPrefersColorScheme: false, // Ignore user's OS/browser preference
+        defaultMode: 'dark',
+        disableSwitch: true,
+        respectPrefersColorScheme: false,
       },
-      // Replace with your project's social card
+
+      // Social card is fine in img/ (this is not an auto-discovery path)
       image: 'img/validate-social-card.png',
+
+      // Meta tags go here (NOT link tags)
+      metadata: [
+        {name: 'theme-color', content: '#ffffff'},
+        {name: 'msapplication-TileColor', content: '#ffffff'},
+      ],
+
       navbar: {
         title: 'PHP Unitary',
         logo: {
@@ -103,11 +148,9 @@ const config = {
             position: 'left',
             label: 'The Documentation',
           },
-          { to: '/validation-api', label: 'Validation API', position: 'left' },
-          { to: '/why-unitary', label: 'Why Unitary?', position: 'left' },
-          { to: '/faq', label: 'FAQ', position: 'left' },
-
-          //{to: '/blog', label: 'Blog', position: 'left'},
+          {to: '/validation-api', label: 'Validation API', position: 'left'},
+          {to: '/why-unitary', label: 'Why Unitary?', position: 'left'},
+          {to: '/faq', label: 'FAQ', position: 'left'},
           {
             type: 'search',
             position: 'right',
@@ -119,60 +162,52 @@ const config = {
           },
         ],
       },
+
       footer: {
         style: 'light',
         links: [
           {
             title: 'Docs',
             items: [
-              {
-                label: 'Tutorial',
-                to: '/docs/intro',
-              },
-              {
-                label: 'Installation',
-                to: '/docs/intro#-installation',
-              },
+              {label: 'Get started', to: '/docs/get-started'},
+              {label: 'Write Tests', to: '/docs/run-tests'},
+              {label: 'Run Tests', to: '/docs/run-tests'},
             ],
           },
           {
             title: 'Community',
             items: [
-              {
-                label: 'GitHub',
-                href: 'https://github.com/MaplePHP/Unitary',
-              },
-              {
-                label: 'LinkedIn',
-                href: 'https://se.linkedin.com/in/daniel-ronkainen-161b3386/en',
-              },
+              {label: 'GitHub', href: 'https://github.com/MaplePHP/Unitary'},
+              {label: 'LinkedIn', href: 'https://se.linkedin.com/in/daniel-ronkainen-161b3386/en'},
             ],
           },
           {
             title: 'More',
             items: [
-              {
-                label: 'Blunder',
-                href: 'https://github.com/MaplePHP/Blunder',
-              },
-              {
-                label: 'Prompts',
-                href: 'https://github.com/MaplePHP/Prompts',
-              },
-              {
-                label: 'Unitary',
-                href: 'https://github.com/MaplePHP/Unitary',
-              },
+              {label: 'Unitary', href: 'https://github.com/MaplePHP/unitary'},
+              {label: 'Emitron', href: 'https://github.com/MaplePHP/maplephp'},
+              {label: 'HTTP message', href: 'https://github.com/MaplePHP/http'},
+              {label: 'Prompts', href: 'https://github.com/MaplePHP/Prompts'},
+              {label: 'Blunder', href: 'https://github.com/MaplePHP/Blunder'},
+            ],
+          },
+          {
+            title: 'More',
+            items: [
+              {label: 'Validate', href: 'https://github.com/MaplePHP/validate'},
+              {label: 'Darn Tidy object', href: 'https://github.com/MaplePHP/dto'},
+              {label: 'Container', href: 'https://github.com/MaplePHP/container'},
+              {label: 'Cache', href: 'https://github.com/MaplePHP/cache'},
             ],
           },
         ],
         copyright: `Copyright © ${new Date().getFullYear()} Darn Tidy Object (Unitary), Inc. Built with Docusaurus.`,
       },
+
       prism: {
         additionalLanguages: ['php'],
         theme: prismThemes.github,
         darkTheme: prismThemes.jettwaveDark,
-        //dracula, jettwaveDark
       },
     }),
 };

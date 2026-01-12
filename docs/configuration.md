@@ -11,18 +11,134 @@ Both formats are equivalent — PHP for flexibility, JSON for portability.
 
 ```php
 <?php
+
 return [
-    'path'              => false,
-    'smart-search'      => false,
-    'errors-only'       => false,
-    'verbose'           => false,
-    'exclude'           => false,
-    'discover-pattern'  => false,
-    'show'              => false,
-    'timezone'          => 'Europe/Stockholm',
-    'locale'            => 'en_US',
+
+    /*
+     |--------------------------------------------------------------------------
+     | Test discovery
+     |--------------------------------------------------------------------------
+     */
+
+    /**
+     * Where Unitary should start discovering tests.
+     *
+     * Accepted values:
+     *  - false            Use default discovery root
+     *  - string           Single path (absolute or relative)
+     */
+    'path' => false,
+
+    /**
+     * Files or directories to exclude during discovery.
+     *
+     * Accepted values:
+     *  - false            No exclusions
+     *  - string           Comma-separated list
+     */
+    'exclude' => false,
+
+    /**
+     * Override default discovery behavior.
+     *
+     * Default behavior:
+     *  - `tests/` directories
+     *  - `unitary-*.php` files
+     *
+     * Accepted values:
+     *  - false            Use defaults
+     *  - string           Directory name or filename pattern
+     */
+    'discover-pattern' => false,
+
+    /**
+     * Enable recursive search when no tests are found in a directory.
+     *
+     * Accepted values:
+     *  - bool
+     */
+    'smart-search' => false,
+
+    /**
+     * Run a specific test or group by name or hash.
+     *
+     * Accepted values:
+     *  - false
+     *  - string           Test name or hash
+     */
+    'show' => false,
+
+
+    /*
+     |--------------------------------------------------------------------------
+     | Output & reporting
+     |--------------------------------------------------------------------------
+     */
+
+    /**
+     * Show only failing or invalid tests.
+     *
+     * Accepted values:
+     *  - bool
+     */
+    'errors-only' => false,
+
+    /**
+     * Display warnings and extended diagnostic output.
+     *
+     * Accepted values:
+     *  - bool
+     */
+    'verbose' => false,
+
+    /**
+     * Always display full file paths, even for passing tests.
+     *
+     * Accepted values:
+     *  - bool
+     */
     'always-show-files' => false,
-    'fail-fast'         => false,
+
+    /**
+     * Stop execution immediately on first error or unexpected exception.
+     *
+     * Accepted values:
+     *  - bool
+     */
+    'fail-fast' => false,
+
+    /**
+     * Output format.
+     *
+     * Accepted values:
+     *  - false            Default CLI output
+     *  - 'cli'
+     *  - 'junit'
+     */
+    'type' => false,
+
+
+    /*
+     |--------------------------------------------------------------------------
+     | Environment
+     |--------------------------------------------------------------------------
+     */
+
+    /**
+     * Default timezone used during test execution.
+     *
+     * Accepted values:
+     *  - string (valid PHP timezone)
+     */
+    'timezone' => 'UTC',
+
+    /**
+     * Locale used for formatted output (dates, times).
+     *
+     * Accepted values:
+     *  - string (e.g. en_US, sv_SE)
+     */
+    'locale' => 'en_US',
 ];
 ```
 
