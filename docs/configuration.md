@@ -6,8 +6,7 @@ import ConfigTable from './_includes/config-table.mdx';
 
 ## Configuration
 
-Unitary automatically loads defaults from either `unitary.config.php` or `unitary.json` located next to your `composer.json`.
-Both formats are equivalent — PHP for flexibility, JSON for portability.
+You can define a custom Unitary configuration by placing a `unitary.config.php` file in the same directory as your `composer.json`.
 
 ```php
 <?php
@@ -160,7 +159,7 @@ They share the same names, accepted types, and default values.
 
 Unitary merges configuration from all sources in a fixed order:
 
-1. **File** — base project defaults (`unitary.config.php` or `unitary.json`)
+1. **File** — base project defaults (`unitary.config.php`)
 2. **Code** — per-group settings defined through `TestConfig`
 3. **CLI** — temporary overrides applied last
 

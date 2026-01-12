@@ -137,7 +137,7 @@ They share the same names, accepted types, and default values.
 
 Unitary merges configuration from all sources in a fixed order:
 
-1. **File** — base project defaults (`unitary.config.php` or `unitary.json`)
+1. **File** — base project defaults (`unitary.config.php`)
 2. **Code** — per-group settings defined through `TestConfig`
 3. **CLI** — temporary overrides applied last
 
