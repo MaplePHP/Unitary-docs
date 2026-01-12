@@ -1,0 +1,172 @@
+
+# Why Unitary
+
+**Unitary exists to remove friction from testing.** Most PHP testing tools are layered on top of legacy runners, assertion models, and plugin ecosystems. They are flexible, but slow, opaque, and difficult to reason about at scale. Configuration grows. Abstractions leak. Debugging becomes indirect.
+
+#### Unitary takes a different approach.
+
+It is a **Evidence-Driven testing framework**, built from scratch with **zero third-party runtime dependencies**, designed for **deterministic execution**, **full test isolation**, and **extreme performance**.
+
+The result is a system where tests are fast enough to run constantly, precise enough to trust, and simple enough to stay out of your way.
+
+---
+
+## What Problem Unitary Solves
+
+Traditional PHP testing frameworks optimize for compatibility and extensibility.
+Unitary optimizes for **clarity, control, and speed**.
+
+Common problems Unitary addresses:
+
+* Slow feedback loops that discourage full test runs
+* Assertion models that hide input and failure context
+* Mocking systems that fight the language
+* Complex configuration and bootstrapping
+* Non-deterministic execution order
+* Cascading failures that obscure the root cause
+
+Unitary removes these by design, not by convention.
+
+---
+
+## Evidence-Driven testing framework
+
+Failures always show:
+
+* The validation that failed
+* The input value
+* The exact location
+* The line number
+
+No guessing. No stepping through opaque assertion chains.
+
+---
+
+## Deterministic by Default
+
+Unitary executes tests **sequentially and deterministically**.
+
+* No hidden parallelism
+* No reordering
+* No shared state leakage
+
+This guarantees that:
+
+* A failing test always fails the same way
+* Debugging does not depend on execution timing
+* CI and local runs behave identically
+
+Performance comes from a fast core, not concurrency tricks.
+
+---
+
+## Hard Stops Where They Matter
+
+Unitary distinguishes between **validation failures** and **hard failures**.
+
+* Validation failures are reported and execution continues
+* `assert()` inside a group is a **strict halt**
+* Fatal errors and unexpected exceptions stop the file immediately
+
+This gives you precise control over when execution should stop and when it should continue collecting failures.
+
+Per-group strict halts make it possible to protect critical invariants without sacrificing full reporting elsewhere.
+
+---
+
+## Mocking Is a First-Class Feature
+
+Unitary includes a built-in mock engine. No adapters. No plugins.
+
+##### You can:
+
+* Mock classes or wrap real implementations
+* Override specific methods
+* Keep original behavior where needed
+* Define expectations, return values, and call counts
+* Mock final and private methods when required
+
+Mocking is explicit and local to the test group, ensuring **full isolation**.
+
+---
+
+## Zero Boilerplate Setup
+
+There is nothing to configure to start testing.
+
+* No bootstrap files
+* No XML or YAML
+* No annotations
+* No base classes
+
+Install the package, write a test file, run the CLI.
+
+Automatic discovery finds all test groups without scanning unrelated code paths.
+
+---
+
+## Built for Speed, Not Compatibility
+
+Unitary is not built on PHPUnit or any other legacy tool.
+
+The core is:
+
+* Purpose-built
+* Dependency-free
+* Optimized for low overhead
+
+This enables:
+
+* 100,000+ validations per second
+* Very low memory usage
+* Predictable CI runtimes
+* Fast local iteration
+
+Speed is not a benchmark feature. It is what makes disciplined testing practical.
+
+---
+
+## Security and Supply-Chain Awareness
+
+Unitary includes built-in inspection tools for:
+
+* Dependency analysis
+* Supply-chain visibility
+* Vulnerability scanning
+
+These run alongside tests, without additional tooling or CI glue.
+
+Testing correctness and dependency safety belong in the same workflow.
+
+---
+
+## Feature Summary
+
+* Validation-first engine
+* Deterministic sequential execution
+* Zero boilerplate setup
+* Extremely fast execution
+* Built-in mock engine
+* Per-group strict-halt assertions
+* Colorized, structured CLI output
+* Automatic test discovery
+* Configurable test paths
+* Run individual files or directories
+* Full test isolation
+* Input-bound validations
+* Optional descriptions
+* Detailed failure messages
+* Human-readable errors with input visibility
+* JUnit XML output
+* Debug mode
+* Built-in dependency and vulnerability inspection
+
+---
+
+## Philosophy
+
+> Test everything. All the time. Without friction.
+
+When tests are fast, clear, and predictable, they stop being a cost and start being a tool you rely on.
+
+That is the standard Unitary is built for.
