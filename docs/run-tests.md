@@ -106,7 +106,7 @@ php vendor/bin/unitary --show=unitary
 
 #### Response
 
-![Unitary CLI response](https://wazabii.se/github-assets/unitary/unitary-cli-state-grouped.png)
+![Unitary CLI response](https://wazabii.se/github-assets/unitary/unitary-cli-named-group.png)
 
 ---
 

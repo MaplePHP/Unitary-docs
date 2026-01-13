@@ -34,12 +34,11 @@ export default function DynamicSections({sections}) {
     return matches;
   }
 
-
-  const Test = ({ code, title }) => {
+  const CodeExample = ({ code, title }) => {
     const args = extractParenthesesValues(code);
-    return `$case->validate(${args[0] ?? ""}, function(Expect $inst) {
-    $inst->${title}(${args[1] ?? ""});
-});`;
+    return `$case->expect(${args[0] ?? ""})
+     ->${title}(${args[1] ?? ""})
+     ->validate();`;
   }
 
   return (
@@ -74,7 +73,7 @@ export default function DynamicSections({sections}) {
           )}
           <aside className="mb-1">
             <h3 className={"headline-5"}>Example</h3>
-            <CodeBlock language="php">{`${Test(section)}`}</CodeBlock>
+            <CodeBlock language="php">{`${CodeExample(section)}`}</CodeBlock>
           </aside>
         </div>
       ))}

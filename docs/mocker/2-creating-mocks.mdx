@@ -18,9 +18,9 @@ group("Mocking a PSR-7 Stream", function(TestCase $case) {
     // Inject the mock into a Response object
     $response = new Response($stream);
     
-    $case->validate($response->getBody(), function(Expect $expect) {
-        $expect->isInstanceOf(StreamInterface::class);
-    });
+    $case->expect($response->getBody())
+         ->isInstanceOf(StreamInterface::class)
+         ->validate();
 });
 ```
 _This is actually all you need to do to mock a class._
@@ -48,9 +48,9 @@ group("Testing a User Registration Service", function(TestCase $case) {
 
     $service = new UserService($mailer);
 
-    $case->validate($service->register("user@example.com"), function(Expect $expect) {
-        $expect->isTrue();
-    });
+    $case->expect($service->register("user@example.com"))
+         ->isTrue()
+         ->validate();
 });
 ```
 
