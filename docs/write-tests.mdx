@@ -20,6 +20,10 @@ group("HTTP Request", function(TestCase $case) {
 
     $request = new Request("GET", "https://example.com/?id=1&slug=hello");
 
+    $case->expect(1 + 1)
+        ->isEqualTo(2)
+        ->validate();
+
     $case->expect($request->getMethod())
         ->isRequestMethod()
         ->validate();
