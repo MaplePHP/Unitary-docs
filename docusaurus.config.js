@@ -73,6 +73,13 @@ const config = {
   // Add link tags for icons/manifest (baseUrl-aware for GitHub Pages project sites)
   headTags: [
     {
+      tagName: 'meta',
+      attributes: {
+        name: 'algolia-site-verification',
+        content: 'E26F10C563888C99',
+      },
+    },
+    {
       tagName: 'link',
       attributes: {
         rel: 'apple-touch-icon',

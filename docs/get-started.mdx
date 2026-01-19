@@ -68,24 +68,20 @@ tests/unitary-user.php
 #### Example test
 
 ```php
-use MaplePHP\Unitary\{Expect,TestCase};
+use MaplePHP\Unitary\TestCase;
 
 group("Your grouped test subject", function (TestCase $case) {
 
-    $json = '{"response":{"status":200,"message":"ok"}}';
+    $case->expect(1 + 2)
+        ->isEqualTo(2)
+        ->validate("Addition must be correct"); // Will fail
 
-    $case->expect($json)
-         ->isJson()
-         ->hasJsonValueAt("response.status", 200)
-         ->validate();
 });
 ```
+**Note** that in Unitary it is recommended to place multiple tests within a group. Unitary is evidence-driven and will clearly report what failed, and why, when a failure occurs. You can also add additional evidence and descriptive messages to improve clarity. See the **[Write Tests](/docs/write-tests)** section for further details.
 
-You can also get a ready-to-use boilerplate code with:
+_You can also get a ready-to-use boilerplate code with `php vendor/bin/unitary template`_
 
-```bash
-php vendor/bin/unitary template
-```
 
 ---
 
@@ -97,17 +93,11 @@ Execute all discovered test groups:
 php vendor/bin/unitary
 ```
 
-Show only failed validations:
+_For help and all CLI options run `php vendor/bin/unitary --help`_
 
-```bash
-php vendor/bin/unitary --errors-only
-```
+#### Response
 
-For help and all CLI options:
-
-```bash
-php vendor/bin/unitary --help
-```
+![Unitary CLI response](https://wazabii.se/github-assets/unitary/unitary-cli-example-failure.png)
 
 ---
 

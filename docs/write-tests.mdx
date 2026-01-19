@@ -20,9 +20,9 @@ group("HTTP Request", function(TestCase $case) {
 
     $request = new Request("GET", "https://example.com/?id=1&slug=hello");
 
-    $case->expect(1 + 1)
-        ->isEqualTo(2)
-        ->validate();
+    $case->expect($request->getPort())
+        ->isEqualTo(80)
+        ->validate("Default HTTP port must be resolved correctly.");
 
     $case->expect($request->getMethod())
         ->isRequestMethod()
