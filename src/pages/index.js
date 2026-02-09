@@ -34,7 +34,6 @@ function HomepageHeader() {
           </article>
         </div>
       </div>
-      <SearchModal isOpen={open} onClose={() => setOpen(false)}/>
     </>
   );
 }

@@ -173,6 +173,11 @@ html[data-theme='dark'] {
   --ifm-hover-overlay: rgba(255, 255, 255, 0.04);
   --ifm-pagination-nav-color: var(--ifm-color-primary);
   --ifm-toc-border-color: #3a4b61;
+
+  --docsearch-highlight-color: #61728e;
+  --docsearch-muted-color: #FFF !important;
+  --docsearch-key-gradient: #647f93 !important;
+  --docsearch-searchbox-background: #23394E !important;
 }
 
 body, html {

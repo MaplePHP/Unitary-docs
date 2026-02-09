@@ -118,6 +118,18 @@ const config = {
   themeConfig:
   /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
+      algolia: {
+        appId: '3SHRGH4EEU',
+        apiKey: '76329c646b57a7751fa2f6f536521bf2', // "Search-Only API Key" (safe to expose)
+        indexName: 'Unitary',
+
+        // Recommended:
+        contextualSearch: true,
+        searchParameters: {},
+
+        // Optional but useful:
+        insights: true, // enable click analytics if you also enable it in Algolia
+      },
       colorMode: {
         defaultMode: 'dark',
         disableSwitch: true,
